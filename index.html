@@ -1,1746 +1,737 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tình Yêu · Lựa Chọn · Hậu Quả</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap"
-      rel="stylesheet" />
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-      :root {
-        --bg: #faf8f4;
-        --surface: #fff;
-        --surface2: #f5f2ec;
-        --text: #1a1714;
-        --text2: #6b6460;
-        --text3: #a09890;
-        --accent: #c4703a;
-        --accent2: #8b4513;
-        --accent-light: #fdf0e8;
-        --border: #e8e0d5;
-        --border2: #d4c9bc;
-        --trust: #4a8c6e;
-        --conflict: #c4503a;
-        --comm: #3a6c8c;
-        --emotion: #8c5a3a;
-        --radius: 12px;
-        --radius-lg: 20px;
-      }
-      body {
-        font-family: "DM Sans", sans-serif;
-        background: var(--bg);
-        color: var(--text);
-        min-height: 100vh;
-        padding: 0;
-      }
-      h1,
-      h2,
-      h3 {
-        font-family: "Playfair Display", serif;
-      }
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tình Yêu · Lựa Chọn · Hậu Quả</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fraunces:ital,wght@1,700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 
-      #app {
-        max-width: 720px;
-        margin: 0 auto;
-        padding: 2rem 1rem;
-      }
+:root{
+  --bg:#f8f0ff;
+  --white:#ffffff;
+  --card:#ffffff;
 
-      .header {
-        text-align: center;
-        margin-bottom: 2.5rem;
-      }
-      .header h1 {
-        font-size: 2rem;
-        color: var(--text);
-        margin-bottom: 0.5rem;
-        letter-spacing: -0.5px;
-      }
-      .header p {
-        color: var(--text2);
-        font-size: 0.95rem;
-        line-height: 1.6;
-      }
-      .header .tagline {
-        display: inline-block;
-        background: var(--accent-light);
-        color: var(--accent2);
-        font-size: 0.8rem;
-        padding: 0.3rem 0.8rem;
-        border-radius: 20px;
-        margin-bottom: 0.8rem;
-        font-weight: 500;
-      }
+  --purple:#8b5cf6;
+  --purple-dark:#6d28d9;
+  --purple-light:#ede9fe;
+  --purple-mid:#c4b5fd;
 
-      .scenario-card {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: var(--radius-lg);
-        padding: 1.75rem;
-        margin-bottom: 1.5rem;
-        position: relative;
-        overflow: hidden;
-      }
-      .scenario-card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 3px;
-        background: linear-gradient(90deg, var(--accent), var(--accent2));
-      }
-      .scenario-num {
-        font-size: 0.75rem;
-        font-weight: 500;
-        color: var(--text3);
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        margin-bottom: 0.5rem;
-      }
-      .scenario-title {
-        font-size: 1.3rem;
-        color: var(--text);
-        margin-bottom: 0.8rem;
-      }
-      .scenario-desc {
-        color: var(--text2);
-        font-size: 0.9rem;
-        line-height: 1.6;
-        background: var(--surface2);
-        padding: 1rem;
-        border-radius: var(--radius);
-        border-left: 3px solid var(--accent);
-      }
+  --pink:#ec4899;
+  --pink-dark:#be185d;
+  --pink-light:#fce7f3;
+  --pink-mid:#f9a8d4;
 
-      .depth-label {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        margin: 1.25rem 0 0.75rem;
-        font-size: 0.8rem;
-        font-weight: 500;
-        color: var(--text3);
-      }
-      .depth-label::after {
-        content: "";
-        flex: 1;
-        height: 1px;
-        background: var(--border);
-      }
+  --cyan:#06b6d4;
+  --cyan-light:#cffafe;
+  --cyan-mid:#67e8f9;
 
-      .choices-list {
-        display: flex;
-        flex-direction: column;
-        gap: 0.7rem;
-      }
-      .choice-btn {
-        background: var(--surface);
-        border: 1px solid var(--border2);
-        border-radius: var(--radius);
-        padding: 1rem 1.2rem;
-        cursor: pointer;
-        text-align: left;
-        transition: all 0.2s;
-        position: relative;
-        overflow: hidden;
-        width: 100%;
-      }
-      .choice-btn:hover {
-        border-color: var(--accent);
-        background: var(--accent-light);
-        transform: translateX(4px);
-      }
-      .choice-btn .choice-id {
-        font-size: 0.75rem;
-        font-weight: 600;
-        color: var(--accent);
-        letter-spacing: 0.5px;
-        margin-bottom: 0.3rem;
-      }
-      .choice-btn .choice-text {
-        font-size: 0.9rem;
-        color: var(--text);
-        line-height: 1.4;
-      }
-      .choice-btn .choice-effect {
-        display: flex;
-        gap: 0.4rem;
-        margin-top: 0.5rem;
-        flex-wrap: wrap;
-      }
-      .effect-tag {
-        font-size: 0.7rem;
-        padding: 0.15rem 0.5rem;
-        border-radius: 10px;
-        font-weight: 500;
-      }
-      .effect-trust {
-        background: #e8f5ef;
-        color: var(--trust);
-      }
-      .effect-conflict {
-        background: #fde8e8;
-        color: var(--conflict);
-      }
-      .effect-comm {
-        background: #e8eff5;
-        color: var(--comm);
-      }
-      .effect-emotion {
-        background: #f5ece8;
-        color: var(--emotion);
-      }
+  --green:#10b981;
+  --green-light:#d1fae5;
+  --green-mid:#6ee7b7;
 
-      .result-card {
-        background: var(--surface2);
-        border: 1px solid var(--border);
-        border-radius: var(--radius-lg);
-        padding: 1.5rem;
-        margin-top: 1rem;
-      }
-      .result-card .r-short {
-        font-size: 1rem;
-        font-weight: 500;
-        color: var(--text);
-        margin-bottom: 0.4rem;
-      }
-      .result-card .r-long {
-        font-size: 0.85rem;
-        color: var(--text2);
-        font-style: italic;
-        border-left: 2px solid var(--accent);
-        padding-left: 0.75rem;
-        margin-top: 0.5rem;
-      }
+  --orange:#f59e0b;
+  --orange-light:#fef3c7;
+  --orange-mid:#fcd34d;
 
-      .breadcrumb {
-        display: flex;
-        align-items: center;
-        gap: 0.4rem;
-        flex-wrap: wrap;
-        margin-bottom: 1rem;
-      }
-      .bc-item {
-        font-size: 0.75rem;
-        color: var(--accent2);
-        background: var(--accent-light);
-        padding: 0.2rem 0.6rem;
-        border-radius: 10px;
-        font-weight: 500;
-      }
-      .bc-sep {
-        color: var(--text3);
-        font-size: 0.7rem;
-      }
+  --red:#ef4444;
+  --red-light:#fee2e2;
+  --red-mid:#fca5a5;
 
-      .nav-btns {
-        display: flex;
-        gap: 0.75rem;
-        margin-top: 1.25rem;
-        flex-wrap: wrap;
-      }
-      .btn {
-        padding: 0.65rem 1.25rem;
-        border-radius: 10px;
-        cursor: pointer;
-        font-size: 0.85rem;
-        font-weight: 500;
-        font-family: "DM Sans", sans-serif;
-        border: 1px solid;
-        transition: all 0.15s;
-      }
-      .btn-primary {
-        background: var(--accent);
-        color: #fff;
-        border-color: var(--accent2);
-      }
-      .btn-primary:hover {
-        background: var(--accent2);
-      }
-      .btn-secondary {
-        background: var(--surface);
-        color: var(--text2);
-        border-color: var(--border2);
-      }
-      .btn-secondary:hover {
-        background: var(--surface2);
-        color: var(--text);
-      }
+  --text:#1e1b4b;
+  --text2:#4c1d95;
+  --text3:#a78bfa;
 
-      .progress-bar {
-        background: var(--border);
-        border-radius: 10px;
-        height: 5px;
-        margin-bottom: 2rem;
-        overflow: hidden;
-      }
-      .progress-fill {
-        height: 100%;
-        background: linear-gradient(90deg, var(--accent), var(--accent2));
-        border-radius: 10px;
-        transition: width 0.4s ease;
-      }
+  --shadow: 0 4px 24px rgba(139,92,246,.13);
+  --shadow-lg: 0 8px 40px rgba(139,92,246,.18);
 
-      .scores-panel {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: var(--radius-lg);
-        padding: 1.25rem;
-        margin-bottom: 1.5rem;
-      }
-      .scores-title {
-        font-size: 0.75rem;
-        font-weight: 500;
-        color: var(--text3);
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        margin-bottom: 0.9rem;
-      }
-      .score-row {
-        display: grid;
-        grid-template-columns: 110px 1fr 36px;
-        align-items: center;
-        gap: 0.6rem;
-        margin-bottom: 0.5rem;
-      }
-      .score-label {
-        font-size: 0.8rem;
-        color: var(--text2);
-        font-weight: 500;
-      }
-      .score-track {
-        background: var(--border);
-        border-radius: 5px;
-        height: 6px;
-        overflow: hidden;
-      }
-      .score-bar {
-        height: 100%;
-        border-radius: 5px;
-        transition: width 0.4s ease;
-      }
-      .score-val {
-        font-size: 0.75rem;
-        font-weight: 500;
-        text-align: right;
-      }
-      .score-trust {
-        background: var(--trust);
-      }
-      .score-conflict {
-        background: var(--conflict);
-      }
-      .score-comm {
-        background: var(--comm);
-      }
-      .score-emotion {
-        background: var(--emotion);
-      }
-      .trust-val {
-        color: var(--trust);
-      }
-      .conflict-val {
-        color: var(--conflict);
-      }
-      .comm-val {
-        color: var(--comm);
-      }
-      .emotion-val {
-        color: var(--emotion);
-      }
+  --r:14px;
+  --r-lg:22px;
+  --r-xl:32px;
+}
 
-      .final-screen {
-        padding: 1rem 0;
-      }
-      .result-type {
-        display: inline-block;
-        padding: 0.5rem 1.5rem;
-        border-radius: 20px;
-        font-size: 1rem;
-        font-weight: 500;
-        margin: 0.75rem 0 1.5rem;
-        font-family: "Playfair Display", serif;
-        font-style: italic;
-      }
-      .result-desc {
-        color: var(--text2);
-        line-height: 1.7;
-        margin-bottom: 1.5rem;
-        font-size: 0.92rem;
-      }
-      .traits-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 0.75rem;
-        margin: 1.5rem 0;
-        text-align: left;
-      }
-      .trait-item {
-        background: var(--surface2);
-        border-radius: var(--radius);
-        padding: 0.9rem;
-        border: 1px solid var(--border);
-      }
-      .trait-name {
-        font-size: 0.75rem;
-        font-weight: 600;
-        color: var(--text3);
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        margin-bottom: 0.3rem;
-      }
-      .trait-val {
-        font-size: 0.9rem;
-        color: var(--text);
-        font-weight: 500;
-      }
+body{
+  font-family:'Nunito',sans-serif;
+  background:var(--bg);
+  min-height:100vh;
+  color:var(--text);
+  background-image:
+    radial-gradient(circle at 15% 15%, #ede9fe 0%, transparent 45%),
+    radial-gradient(circle at 85% 80%, #fce7f3 0%, transparent 45%),
+    radial-gradient(circle at 50% 50%, #f0fdf4 0%, transparent 60%);
+}
 
-      .section-divider {
-        border: none;
-        border-top: 1px solid var(--border);
-        margin: 1.5rem 0;
-      }
+#app{max-width:720px;margin:0 auto;padding:2rem 1.1rem 5rem}
 
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(8px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      .fade-in {
-        animation: fadeIn 0.3s ease forwards;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script>
-      const SCENARIOS = [
-        {
-          id: "s1",
-          title: "Nghi ngờ ngoại tình",
-          icon: "🧠",
-          description:
-            'Dạo gần đây, bạn thấy người yêu hay giấu điện thoại, nhắn tin lúc khuya rồi quay lưng lại. Bạn bắt đầu có cảm giác "có gì đó không ổn".',
-          choices: [
-            {
-              id: "A",
-              text: "Hỏi thẳng luôn cho rõ",
-              effect: { trust: -1, conflict: 2, comm: -1, emotion: -2 },
-              next: {
-                id: "A",
-                desc: "Họ bất ngờ, hơi phòng thủ",
-                choices: [
-                  {
-                    id: "A1",
-                    text: "Hỏi dồn dập",
-                    effect: { trust: -2, conflict: 3, emotion: -2 },
-                    next: {
-                      id: "A1",
-                      desc: "Họ khó chịu",
-                      choices: [
-                        {
-                          id: "A1a",
-                          text: "Họ cáu lại",
-                          effect: { trust: -2, conflict: 2 },
-                          result: {
-                            short: "Hai người cãi nhau lớn",
-                            long: "Mất an toàn trong mối quan hệ — khoảng cách cảm xúc tăng theo thời gian",
-                          },
-                        },
-                        {
-                          id: "A1b",
-                          text: "Họ bỏ đi",
-                          effect: { trust: -3, conflict: 1 },
-                          result: {
-                            short: "Bạn hoang mang, nghi ngờ tăng",
-                            long: "Thiếu tin tưởng nghiêm trọng — mối quan hệ dễ rơi vào vòng xoáy nghi ngờ",
-                          },
-                        },
-                      ],
-                    },
-                  },
-                  {
-                    id: "A2",
-                    text: "Cố giữ bình tĩnh",
-                    effect: { trust: 0, conflict: 1, comm: 1 },
-                    next: {
-                      id: "A2",
-                      desc: "Họ giải thích",
-                      choices: [
-                        {
-                          id: "A2a",
-                          text: "Bạn vẫn nghi ngờ, kiểm tra điện thoại",
-                          effect: { trust: -3, conflict: 2, emotion: -2 },
-                          result: {
-                            short: "Phát hiện thêm hoặc dằn vặt",
-                            long: "Dù có hay không có bằng chứng — hành động này làm tổn thương cả hai",
-                          },
-                        },
-                        {
-                          id: "A2b",
-                          text: "Bạn tin và buông bỏ nghi ngờ",
-                          effect: { trust: 2, conflict: -1, emotion: 1 },
-                          result: {
-                            short: "Nhẹ hơn, nhưng cần tiếp tục theo dõi",
-                            long: "Niềm tin được trao — mối quan hệ có cơ hội hồi phục nếu lý do là thật",
-                          },
-                        },
-                      ],
-                    },
-                  },
-                  {
-                    id: "A3",
-                    text: "Mất kiểm soát, nói nặng lời",
-                    effect: { trust: -3, conflict: 3, emotion: -3 },
-                    result: {
-                      short: "Không khí rất căng",
-                      long: "Những câu nói trong lúc mất kiểm soát thường để lại vết thương lâu nhất",
-                    },
-                  },
-                ],
-              },
-            },
-            {
-              id: "B",
-              text: "Chọn lúc phù hợp, nói chuyện nhẹ nhàng",
-              effect: { trust: 1, conflict: -1, comm: 2, emotion: 1 },
-              next: {
-                id: "B",
-                desc: "Họ có vẻ cởi mở hơn",
-                choices: [
-                  {
-                    id: "B1",
-                    text: "Họ thừa nhận có vấn đề",
-                    effect: { trust: 0, conflict: 1, comm: 3 },
-                    next: {
-                      id: "B1",
-                      desc: "Bạn bị sốc nhưng có thông tin thật",
-                      choices: [
-                        {
-                          id: "B1a",
-                          text: "Cùng đặt lại ranh giới, xây lại niềm tin",
-                          effect: { trust: 3, conflict: -2, comm: 3 },
-                          result: {
-                            short: "Mối quan hệ trưởng thành hơn",
-                            long: "Đối diện với sự thật và chọn cùng nhau vượt qua — đây là dấu hiệu của mối quan hệ bền vững",
-                          },
-                        },
-                        {
-                          id: "B1b",
-                          text: "Không vượt qua được, chia tay trong hiểu biết",
-                          effect: { trust: 1, conflict: -1, comm: 2 },
-                          result: {
-                            short:
-                              "Ít tổn thương hơn cách chia tay bình thường",
-                            long: "Kết thúc trong tôn trọng là điều không phải ai cũng làm được",
-                          },
-                        },
-                      ],
-                    },
-                  },
-                  {
-                    id: "B2",
-                    text: "Họ chối",
-                    effect: { trust: -2, conflict: 1, comm: 0 },
-                    result: {
-                      short: "Bạn hoang mang hơn",
-                      long: "Khi câu trả lời không thỏa đáng, hãy tin vào cảm xúc của bạn và tiếp tục quan sát",
-                    },
-                  },
-                  {
-                    id: "B3",
-                    text: "Họ né tránh, câu chuyện bỏ lửng",
-                    effect: { trust: -1, conflict: 1, comm: -1 },
-                    result: {
-                      short: "Vấn đề treo lơ lửng",
-                      long: "Né tránh chỉ trì hoãn — không giải quyết. Hãy tìm lúc khác để tiếp tục",
-                    },
-                  },
-                ],
-              },
-            },
-            {
-              id: "C",
-              text: "Im lặng, tự quan sát thêm",
-              effect: { trust: 0, conflict: 0, comm: -2, emotion: -2 },
-              next: {
-                id: "C",
-                desc: "Bạn suy nghĩ rất nhiều",
-                choices: [
-                  {
-                    id: "C1",
-                    text: "Thấy thêm dấu hiệu, bùng nổ mạnh hơn",
-                    effect: { trust: -3, conflict: 3, emotion: -3 },
-                    result: {
-                      short: "Cảm xúc dồn nén → xung đột cực lớn",
-                      long: "Càng chờ, cảm xúc càng tích tụ và dễ gây ra những điều khó kiểm soát hơn",
-                    },
-                  },
-                  {
-                    id: "C2",
-                    text: "Không có gì rõ ràng, tự nghi ngờ bản thân",
-                    effect: { trust: -1, conflict: 0, emotion: -3 },
-                    result: {
-                      short: "Lo âu kéo dài, mất tự tin",
-                      long: "Nghi ngờ bản thân mình cảm nhận — đây là dấu hiệu cần nói chuyện thật sự",
-                    },
-                  },
-                  {
-                    id: "C3",
-                    text: "Tự tưởng tượng nhiều thứ, kiệt sức",
-                    effect: { trust: -2, conflict: 1, emotion: -3 },
-                    result: {
-                      short: "Mệt mỏi từ bên trong",
-                      long: "Tâm trí bạn đang làm việc quá tải — hãy cho bản thân một cuộc trò chuyện thật sự",
-                    },
-                  },
-                ],
-              },
-            },
-          ],
-        },
-        {
-          id: "s2",
-          title: "Mâu thuẫn tiền bạc",
-          icon: "💰",
-          description:
-            "Hai người bắt đầu nói đến chuyện cưới, nhưng bạn nhận ra cách tiêu tiền của hai người rất khác nhau — bạn muốn tiết kiệm, người kia chi tiêu thoải mái.",
-          choices: [
-            {
-              id: "A",
-              text: "Nói thẳng: cách tiêu tiền như vậy là không ổn",
-              effect: { trust: -1, conflict: 2, comm: -1, emotion: -1 },
-              next: {
-                id: "A",
-                desc: "Không khí hơi căng",
-                choices: [
-                  {
-                    id: "A1",
-                    text: "Nói mạnh, họ phản ứng lại",
-                    effect: { trust: -2, conflict: 3, emotion: -2 },
-                    next: {
-                      id: "A1",
-                      desc: "Tranh luận gay gắt",
-                      choices: [
-                        {
-                          id: "A1a",
-                          text: "Ai cũng muốn thắng — không ai nghe ai",
-                          effect: { trust: -2, conflict: 3 },
-                          result: {
-                            short: "Xung đột lặp lại theo chu kỳ",
-                            long: "Mâu thuẫn tiền bạc không giải quyết bằng ai đúng hơn — mà bằng ai sẵn lòng lắng nghe trước",
-                          },
-                        },
-                        {
-                          id: "A1b",
-                          text: "Một người nhượng bộ không thật lòng",
-                          effect: { trust: -1, conflict: 1, emotion: -2 },
-                          result: {
-                            short: "Tạm yên nhưng tích tụ bất mãn",
-                            long: "Nhượng bộ để tránh tranh cãi không phải là giải pháp — sẽ tái phát với mức độ lớn hơn",
-                          },
-                        },
-                      ],
-                    },
-                  },
-                  {
-                    id: "A2",
-                    text: "Cố giải thích logic, tranh luận dài",
-                    effect: { trust: 0, conflict: 2, comm: 1 },
-                    result: {
-                      short: "Hiểu nhau hơn nhưng chưa đồng thuận",
-                      long: "Ít nhất cả hai đều lắng nghe — đây là bước đầu của sự thỏa thuận",
-                    },
-                  },
-                  {
-                    id: "A3",
-                    text: "Muốn họ phải theo ý mình",
-                    effect: { trust: -2, conflict: 2, comm: -1 },
-                    result: {
-                      short: "Họ bên ngoài đồng ý, bên trong khó chịu",
-                      long: "Kiểm soát tài chính của người khác thường dẫn đến sự phản kháng ngầm",
-                    },
-                  },
-                ],
-              },
-            },
-            {
-              id: "B",
-              text: "Ngồi xuống nói chuyện đàng hoàng, tìm điểm chung",
-              effect: { trust: 2, conflict: -1, comm: 3, emotion: 1 },
-              next: {
-                id: "B",
-                desc: "Hai người bình tĩnh hơn",
-                choices: [
-                  {
-                    id: "B1",
-                    text: "Cùng lập kế hoạch chi tiêu chung",
-                    effect: { trust: 3, conflict: -2, comm: 3 },
-                    result: {
-                      short: "Tài chính ổn định, cảm giác an toàn tăng",
-                      long: "Có nguyên tắc chung về tiền bạc là nền tảng quan trọng nhất cho hôn nhân",
-                    },
-                  },
-                  {
-                    id: "B2",
-                    text: "Chưa thống nhất, thử phương án trung gian",
-                    effect: { trust: 1, conflict: 0, comm: 2 },
-                    result: {
-                      short: "Chấp nhận được, nhưng còn lấn cấn",
-                      long: "Trung gian là điểm khởi đầu — cần nói thêm nhiều lần để tìm ra điều thực sự phù hợp",
-                    },
-                  },
-                  {
-                    id: "B3",
-                    text: "Một người nhường nhiều hơn",
-                    effect: { trust: 0, conflict: 0, comm: 1, emotion: -1 },
-                    result: {
-                      short: "Có chút mất cân bằng",
-                      long: "Nhường quá nhiều trong thời gian dài sẽ tạo ra sự bất bình đẳng vô hình trong mối quan hệ",
-                    },
-                  },
-                ],
-              },
-            },
-            {
-              id: "C",
-              text: "Thôi kệ, tránh nói chuyện về tiền",
-              effect: { trust: -1, conflict: 0, comm: -2, emotion: -1 },
-              next: {
-                id: "C",
-                desc: "Tránh được căng thẳng trước mắt",
-                choices: [
-                  {
-                    id: "C1",
-                    text: "Nợ bắt đầu tích tụ, áp lực tăng",
-                    effect: { trust: -2, conflict: 2, emotion: -2 },
-                    result: {
-                      short: "Đổ lỗi cho nhau khi vỡ ra",
-                      long: "Vấn đề tài chính không tự biến mất — im lặng chỉ là lãi suất cộng dồn",
-                    },
-                  },
-                  {
-                    id: "C2",
-                    text: "Mỗi người một kiểu, khó hiểu nhau",
-                    effect: { trust: -1, conflict: 1, comm: -2 },
-                    result: {
-                      short: "Xa cách dần về mặt thực tế",
-                      long: "Tài chính là cuộc sống hàng ngày — nếu không nói được về điều này, sẽ khó nói được về nhiều thứ khác",
-                    },
-                  },
-                  {
-                    id: "C3",
-                    text: "Đến lúc lớn chuyện mới vỡ ra",
-                    effect: { trust: -3, conflict: 3, emotion: -2 },
-                    result: {
-                      short: "Tổn thương nặng khi vấn đề bùng phát",
-                      long: "Những mâu thuẫn bị chôn vùi thường tái hiện với cường độ gấp đôi",
-                    },
-                  },
-                ],
-              },
-            },
-          ],
-        },
-        {
-          id: "s3",
-          title: "Gia đình can thiệp",
-          icon: "👨‍👩‍👧",
-          description:
-            "Bạn cảm thấy gia đình người kia can thiệp hơi nhiều vào chuyện riêng của hai bạn — từ quyết định nhỏ đến những chuyện quan trọng.",
-          choices: [
-            {
-              id: "A",
-              text: "Nói thẳng là tôi không thích điều này",
-              effect: { trust: -1, conflict: 2, comm: 0, emotion: -1 },
-              next: {
-                id: "A",
-                desc: "Người kia khó xử",
-                choices: [
-                  {
-                    id: "A1",
-                    text: "Họ bênh gia đình, bạn thấy bị bỏ rơi",
-                    effect: { trust: -3, conflict: 2, emotion: -3 },
-                    result: {
-                      short: "Giảm niềm tin, xa cách cảm xúc",
-                      long: "Khi người yêu chọn gia đình hơn bạn trong mọi tình huống — đây là ranh giới cần nói rõ",
-                    },
-                  },
-                  {
-                    id: "A2",
-                    text: "Họ hiểu nhưng khó thay đổi",
-                    effect: { trust: 1, conflict: 0, comm: 1 },
-                    result: {
-                      short: "Thông cảm nhưng vẫn áp lực",
-                      long: "Hiểu vấn đề là bước đầu — thay đổi cần thời gian và nỗ lực từ cả hai phía",
-                    },
-                  },
-                  {
-                    id: "A3",
-                    text: "Hai người bắt đầu căng thẳng",
-                    effect: { trust: -1, conflict: 2, emotion: -2 },
-                    result: {
-                      short: "Không khí nặng nề",
-                      long: "Vấn đề gia đình cần được giải quyết như đội nhóm — không phải đối địch",
-                    },
-                  },
-                ],
-              },
-            },
-            {
-              id: "B",
-              text: "Nói nhẹ nhàng, cùng tìm cách dung hòa",
-              effect: { trust: 2, conflict: -1, comm: 3, emotion: 1 },
-              next: {
-                id: "B",
-                desc: "Không khí dễ chịu hơn",
-                choices: [
-                  {
-                    id: "B1",
-                    text: "Hai người thống nhất, đặt ranh giới với gia đình",
-                    effect: { trust: 3, conflict: -2, comm: 3 },
-                    result: {
-                      short: "Gia đình tôn trọng dần, mối quan hệ vững hơn",
-                      long: "Khi đôi bạn đứng cùng nhau và tôn trọng nhau — gia đình hai bên sẽ dần điều chỉnh",
-                    },
-                  },
-                  {
-                    id: "B2",
-                    text: "Chưa thống nhất, cần nói thêm nhiều lần",
-                    effect: { trust: 1, conflict: 0, comm: 2 },
-                    result: {
-                      short: "Có tiến triển nhưng cần kiên nhẫn",
-                      long: "Vấn đề gia đình thường cần nhiều cuộc trò chuyện — điều quan trọng là không bỏ cuộc",
-                    },
-                  },
-                  {
-                    id: "B3",
-                    text: "Bạn phải nhẫn nhịn nhiều",
-                    effect: { trust: 1, conflict: -1, comm: 1, emotion: -1 },
-                    result: {
-                      short: "Hòa khí tạm thời",
-                      long: "Nhẫn nhịn có giới hạn — hãy đảm bảo bạn cũng được lắng nghe, không chỉ nhường",
-                    },
-                  },
-                ],
-              },
-            },
-            {
-              id: "C",
-              text: "Không nói gì, chịu đựng bên trong",
-              effect: { trust: -1, conflict: 0, comm: -2, emotion: -2 },
-              next: {
-                id: "C",
-                desc: "Bên ngoài yên, bên trong không",
-                choices: [
-                  {
-                    id: "C1",
-                    text: "Bạn khó chịu dần, tích tụ cảm xúc",
-                    effect: { trust: -1, conflict: 1, emotion: -2 },
-                    result: {
-                      short: "Một ngày sẽ bùng nổ",
-                      long: "Cảm xúc bị nén lại không biến mất — chúng chỉ tìm cách khác để thoát ra, thường không đẹp",
-                    },
-                  },
-                  {
-                    id: "C2",
-                    text: "Gia đình can thiệp ngày càng nhiều hơn",
-                    effect: { trust: -2, conflict: 2, emotion: -2 },
-                    result: {
-                      short: "Ranh giới ngày càng mờ",
-                      long: "Khi bạn không lên tiếng, người khác sẽ lấp đầy khoảng trống đó",
-                    },
-                  },
-                  {
-                    id: "C3",
-                    text: "Mọi thứ tích tụ rồi vỡ ra đột ngột",
-                    effect: { trust: -3, conflict: 3, emotion: -3 },
-                    result: {
-                      short: "Tổn thương sâu và khó hàn gắn",
-                      long: "Đỉnh điểm của sự im lặng thường là một cơn bùng phát không ai chuẩn bị trước được",
-                    },
-                  },
-                ],
-              },
-            },
-          ],
-        },
-        {
-          id: "s4",
-          title: "Ít nói chuyện với nhau",
-          icon: "💬",
-          description:
-            'Dạo này hai người nói chuyện ít hẳn, chủ yếu là những câu rất ngắn như "ăn chưa", "đi đâu đó" — không còn những cuộc trò chuyện thật sự.',
-          choices: [
-            {
-              id: "A",
-              text: "Nói thẳng: tôi thấy tụi mình xa nhau rồi",
-              effect: { trust: 1, conflict: 1, comm: 2, emotion: 0 },
-              next: {
-                id: "A",
-                desc: "Người kia hơi bất ngờ",
-                choices: [
-                  {
-                    id: "A1",
-                    text: "Họ lắng nghe, bắt đầu nói chuyện nhiều hơn",
-                    effect: { trust: 2, conflict: -1, comm: 3 },
-                    result: {
-                      short: "Kết nối được khơi lại",
-                      long: "Đôi khi chỉ cần một người dũng cảm nói ra — điều đó có thể thay đổi rất nhiều",
-                    },
-                  },
-                  {
-                    id: "A2",
-                    text: "Họ khó chịu, nói chuyện thành tranh cãi",
-                    effect: { trust: -1, conflict: 2, comm: -1 },
-                    result: {
-                      short: "Cố gắng kết nối nhưng lạc đường",
-                      long: "Thời điểm và cách nói rất quan trọng — thử lại khi cả hai bình tĩnh hơn",
-                    },
-                  },
-                  {
-                    id: "A3",
-                    text: "Hai người hiểu sai ý nhau",
-                    effect: { trust: -1, conflict: 1, comm: -1 },
-                    result: {
-                      short: "Ý tốt nhưng kết quả ngược lại",
-                      long: "Giao tiếp là kỹ năng có thể học — đôi khi cần nói chuyện về cách nói chuyện",
-                    },
-                  },
-                ],
-              },
-            },
-            {
-              id: "B",
-              text: "Rủ đi chơi, làm gì đó chung",
-              effect: { trust: 2, conflict: -1, comm: 1, emotion: 2 },
-              next: {
-                id: "B",
-                desc: "Không khí nhẹ nhàng hơn",
-                choices: [
-                  {
-                    id: "B1",
-                    text: "Hai người vui lại, kết nối trở lại",
-                    effect: { trust: 2, conflict: -1, comm: 2, emotion: 2 },
-                    result: {
-                      short: "Mối quan hệ được hâm nóng",
-                      long: "Kỷ niệm chung là nền tảng của mối quan hệ — tạo thêm chúng mỗi tuần",
-                    },
-                  },
-                  {
-                    id: "B2",
-                    text: "Chỉ vui lúc đó, về nhà lại như cũ",
-                    effect: { trust: 0, conflict: 0, comm: 0, emotion: 0 },
-                    result: {
-                      short: "Cần giải quyết gốc rễ sâu hơn",
-                      long: "Vui chơi là thuốc bổ, không phải thuốc chữa — cần nói chuyện thật sự về khoảng cách",
-                    },
-                  },
-                  {
-                    id: "B3",
-                    text: "Cần cố gắng lâu dài, không phải một lần",
-                    effect: { trust: 1, conflict: -1, comm: 1 },
-                    result: {
-                      short: "Đang đi đúng hướng",
-                      long: "Xây dựng thói quen kết nối mỗi ngày — dù nhỏ — quan trọng hơn những chuyến đi lớn",
-                    },
-                  },
-                ],
-              },
-            },
-            {
-              id: "C",
-              text: "Thôi kệ, ai cũng bận",
-              effect: { trust: -1, conflict: 0, comm: -3, emotion: -1 },
-              next: {
-                id: "C",
-                desc: "Dần xa nhau",
-                choices: [
-                  {
-                    id: "C1",
-                    text: "Ít quan tâm hơn, ít hỏi thăm hơn",
-                    effect: { trust: -2, conflict: 0, comm: -2 },
-                    result: {
-                      short: "Dần trở thành người quen cùng nhà",
-                      long: "Khoảng cách cảm xúc thường bắt đầu từ những việc tưởng như bình thường này",
-                    },
-                  },
-                  {
-                    id: "C2",
-                    text: "Không còn chia sẻ, mỗi người một thế giới",
-                    effect: { trust: -2, conflict: 0, comm: -3, emotion: -1 },
-                    result: {
-                      short: "Cô đơn ngay trong mối quan hệ",
-                      long: "Đây là một trong những dấu hiệu nghiêm trọng nhất — cần hành động sớm",
-                    },
-                  },
-                  {
-                    id: "C3",
-                    text: "Cảm giác như đang sống cùng người lạ",
-                    effect: { trust: -3, conflict: 0, comm: -3, emotion: -3 },
-                    result: {
-                      short: "Xa cách đã trở thành thói quen",
-                      long: "Ở thời điểm này, cần một cuộc trò chuyện thẳng thắn về tương lai mối quan hệ",
-                    },
-                  },
-                ],
-              },
-            },
-          ],
-        },
-        {
-          id: "s5",
-          title: "Khác nhau về cách sống",
-          icon: "🧠",
-          description:
-            "Bạn thích ổn định, kế hoạch rõ ràng — người kia thích tự do, thay đổi liên tục. Sự khác nhau này bắt đầu tạo ra ma sát.",
-          choices: [
-            {
-              id: "A",
-              text: "Tôi muốn họ thay đổi theo mình",
-              effect: { trust: -2, conflict: 2, comm: -1, emotion: -1 },
-              result: {
-                short: "Họ thấy bị ép, không thoải mái",
-                long: "Không ai nên phải từ bỏ bản sắc của mình cho mối quan hệ — tìm điểm dung hòa thay vì yêu cầu thay đổi",
-              },
-            },
-            {
-              id: "B",
-              text: "Chấp nhận sự khác nhau, tìm cách dung hòa",
-              effect: { trust: 2, conflict: -1, comm: 2, emotion: 2 },
-              next: {
-                id: "B",
-                desc: "Nhẹ nhàng hơn, cởi mở hơn",
-                choices: [
-                  {
-                    id: "B1",
-                    text: "Hai người học cách dung hòa hai phong cách",
-                    effect: { trust: 3, conflict: -2, comm: 2 },
-                    result: {
-                      short: "Mối quan hệ phong phú và thú vị hơn",
-                      long: "Sự khác biệt không phải vấn đề — cách hai người phản ứng với nó mới là vấn đề",
-                    },
-                  },
-                  {
-                    id: "B2",
-                    text: "Có lúc vẫn khó chịu, cần thỏa hiệp",
-                    effect: { trust: 1, conflict: 1, comm: 1 },
-                    result: {
-                      short: "Tiến trình không thẳng, nhưng đang đi đúng",
-                      long: "Chấp nhận không có nghĩa là không bao giờ khó chịu — mà là chọn hiểu hơn chọn phán xét",
-                    },
-                  },
-                  {
-                    id: "B3",
-                    text: "Cần đặt ranh giới rõ ràng cho từng người",
-                    effect: { trust: 2, conflict: -1, comm: 2 },
-                    result: {
-                      short: "Ranh giới lành mạnh = tự do trong mối quan hệ",
-                      long: "Biết được điều gì là không thể thỏa hiệp giúp cả hai tránh được xung đột không cần thiết",
-                    },
-                  },
-                ],
-              },
-            },
-            {
-              id: "C",
-              text: "Né tránh, không đề cập đến sự khác nhau",
-              effect: { trust: -1, conflict: 0, comm: -2, emotion: -1 },
-              result: {
-                short: "Mâu thuẫn âm ỉ và sẽ bùng lên",
-                long: "Những điều không được nói ra không biến mất — chúng âm thầm định hình hành vi và cảm xúc hàng ngày",
-              },
-            },
-          ],
-        },
-        {
-          id: "s6",
-          title: "Ghen tuông",
-          icon: "😡",
-          description:
-            "Bạn thấy người yêu nói chuyện khá thân mật với người khác. Cảm giác không thoải mái bắt đầu xuất hiện.",
-          choices: [
-            {
-              id: "A",
-              text: "Kiểm soát họ — hạn chế giao tiếp của họ",
-              effect: { trust: -3, conflict: 3, comm: -2, emotion: -2 },
-              result: {
-                short: "Họ phản kháng hoặc giấu nhiều hơn",
-                long: "Kiểm soát xuất phát từ sợ hãi — nhưng nó thường tạo ra chính điều bạn lo sợ",
-              },
-            },
-            {
-              id: "B",
-              text: "Nói cảm xúc của mình thật lòng",
-              effect: { trust: 2, conflict: -1, comm: 3, emotion: 1 },
-              next: {
-                id: "B",
-                desc: "Họ hiểu bạn hơn",
-                choices: [
-                  {
-                    id: "B1",
-                    text: "Họ trấn an bạn, giải thích rõ ràng",
-                    effect: { trust: 3, conflict: -2, comm: 2 },
-                    result: {
-                      short: "Niềm tin được củng cố",
-                      long: "Ghen tuông lành mạnh là tín hiệu — nói ra và được trấn an là cách xử lý tốt nhất",
-                    },
-                  },
-                  {
-                    id: "B2",
-                    text: "Hai người hiểu nhau hơn về ranh giới",
-                    effect: { trust: 2, conflict: -1, comm: 3 },
-                    result: {
-                      short: "Mối quan hệ rõ ràng và an toàn hơn",
-                      long: "Cuộc trò chuyện về ranh giới trong tình yêu là một trong những cuộc trò chuyện quan trọng nhất",
-                    },
-                  },
-                  {
-                    id: "B3",
-                    text: "Cần thời gian để xây dựng niềm tin",
-                    effect: { trust: 1, conflict: 0, comm: 2 },
-                    result: {
-                      short: "Đang đi đúng hướng",
-                      long: "Niềm tin không thể ép buộc — nhưng có thể được nuôi dưỡng qua hành động nhất quán",
-                    },
-                  },
-                ],
-              },
-            },
-            {
-              id: "C",
-              text: "Giữ trong lòng, không nói ra",
-              effect: { trust: -1, conflict: 0, comm: -2, emotion: -3 },
-              result: {
-                short: "Tự mệt mỏi và bùng nổ sau",
-                long: "Cảm xúc ghen tuông cần được xử lý — bên trong hay bên ngoài — trước khi nó trở thành bức tường ngăn cách",
-              },
-            },
-          ],
-        },
-        {
-          id: "s7",
-          title: "Không dành thời gian",
-          icon: "🕰️",
-          description:
-            "Người kia lúc nào cũng bận. Bạn cảm thấy mình không còn là ưu tiên — và điều đó đau hơn bạn nghĩ.",
-          choices: [
-            {
-              id: "A",
-              text: "Than phiền, bày tỏ sự không hài lòng",
-              effect: { trust: -1, conflict: 2, comm: 0, emotion: -1 },
-              next: {
-                id: "A",
-                desc: "Họ cảm thấy áp lực",
-                choices: [
-                  {
-                    id: "A1",
-                    text: "Họ cố thay đổi vì cảm thấy tội lỗi",
-                    effect: { trust: 0, conflict: 1, comm: 1 },
-                    result: {
-                      short: "Thay đổi từ tội lỗi không bền vững",
-                      long: "Thay đổi vì tình yêu bền lâu hơn thay đổi vì tội lỗi — hãy nói về điều bạn cần thay vì những gì bạn thiếu",
-                    },
-                  },
-                  {
-                    id: "A2",
-                    text: "Họ khó chịu, cảm thấy bị phán xét",
-                    effect: { trust: -1, conflict: 2, emotion: -1 },
-                    result: {
-                      short: "Xa cách thêm thay vì gần hơn",
-                      long: "Không ai muốn ở gần người khiến họ thấy tồi — cách nói quyết định kết quả",
-                    },
-                  },
-                  {
-                    id: "A3",
-                    text: "Họ né tránh hơn vì áp lực",
-                    effect: { trust: -2, conflict: 2, comm: -2 },
-                    result: {
-                      short: "Vòng lặp tiêu cực hình thành",
-                      long: "Than phiền → người kia né → bạn cô đơn hơn → than phiền nhiều hơn. Cần phá vỡ vòng lặp này",
-                    },
-                  },
-                ],
-              },
-            },
-            {
-              id: "B",
-              text: "Chủ động rủ làm điều gì đó cùng",
-              effect: { trust: 2, conflict: -1, comm: 2, emotion: 2 },
-              result: {
-                short: "Tích cực, gần nhau hơn dần",
-                long: "Tạo ra thời gian chung là hành động của tình yêu — không phải chờ đợi người kia tự nhận ra",
-              },
-            },
-            {
-              id: "C",
-              text: "Mặc kệ, cũng không cần họ nữa",
-              effect: { trust: -2, conflict: 0, comm: -3, emotion: -2 },
-              result: {
-                short: "Xa nhau dần, lạnh nhạt",
-                long: "Rút lui hoàn toàn có thể là cơ chế tự bảo vệ — nhưng nó thường kết thúc mối quan hệ trong im lặng",
-              },
-            },
-          ],
-        },
-        {
-          id: "s8",
-          title: "Nghiện điện thoại",
-          icon: "📱",
-          description:
-            "Hai người đi ăn cùng nhau nhưng người kia cứ cắm mặt vào điện thoại. Bạn ngồi đó cảm thấy vô hình.",
-          choices: [
-            {
-              id: "A",
-              text: "Nói thẳng: bỏ điện thoại xuống đi",
-              effect: { trust: -1, conflict: 1, comm: 0, emotion: -1 },
-              next: {
-                id: "A",
-                desc: "Họ hơi khó chịu",
-                choices: [
-                  {
-                    id: "A1",
-                    text: "Họ cãi lại, tranh luận về điện thoại",
-                    effect: { trust: -1, conflict: 2, emotion: -1 },
-                    result: {
-                      short: "Tranh cãi về triệu chứng, bỏ qua gốc rễ",
-                      long: "Điện thoại là biểu hiện — vấn đề thật có thể là cả hai đã hết chủ đề để nói chuyện",
-                    },
-                  },
-                  {
-                    id: "A2",
-                    text: "Họ làm theo nhưng miễn cưỡng",
-                    effect: { trust: 0, conflict: 1, comm: 0 },
-                    result: {
-                      short: "Buổi ăn gượng gạo",
-                      long: "Ép buộc sự hiện diện không tạo ra kết nối thật sự",
-                    },
-                  },
-                  {
-                    id: "A3",
-                    text: "Họ cất điện thoại và hai người trò chuyện",
-                    effect: { trust: 1, conflict: -1, comm: 2 },
-                    result: {
-                      short: "Kết nối được khôi phục",
-                      long: "Đôi khi chỉ cần một lần nhẹ nhàng nhắc nhở đúng lúc",
-                    },
-                  },
-                ],
-              },
-            },
-            {
-              id: "B",
-              text: "Góp ý nhẹ nhàng, chia sẻ cảm xúc của mình",
-              effect: { trust: 1, conflict: -1, comm: 2, emotion: 1 },
-              result: {
-                short: "Họ nhận ra và thay đổi dần",
-                long: "Nói về cảm xúc của bạn ('muốn được trò chuyện') hiệu quả hơn phán xét ('cứ cắm điện thoại')",
-              },
-            },
-            {
-              id: "C",
-              text: "Không nói gì, ngồi buồn một mình",
-              effect: { trust: -1, conflict: 0, comm: -2, emotion: -2 },
-              result: {
-                short: "Cảm thấy bị bỏ rơi, xa nhau dần",
-                long: "Im lặng và chịu đựng là cách yêu bản thân ít nhất — bạn xứng đáng được hiện diện thật sự",
-              },
-            },
-          ],
-        },
-        {
-          id: "s9",
-          title: "Cảm giác hết yêu",
-          icon: "💔",
-          description:
-            "Bạn bắt đầu thấy tình cảm không còn như trước. Những cảm xúc quen thuộc dần phai nhạt và bạn không chắc mình còn yêu không.",
-          choices: [
-            {
-              id: "A",
-              text: "Chia tay luôn, dứt khoát",
-              effect: { trust: 0, conflict: -1, comm: 0, emotion: 0 },
-              next: {
-                id: "A",
-                desc: "Quyết định rõ ràng",
-                choices: [
-                  {
-                    id: "A1",
-                    text: "Bạn nhẹ nhõm",
-                    effect: { trust: 1, conflict: -2, emotion: 2 },
-                    result: {
-                      short: "Quyết định đúng đắn cho bạn",
-                      long: "Đôi khi dứt khoát là hành động tử tế nhất cho cả hai — sống thật với cảm xúc là điều dũng cảm",
-                    },
-                  },
-                  {
-                    id: "A2",
-                    text: "Bạn hối hận và tiếc",
-                    effect: { trust: -1, conflict: 0, emotion: -2 },
-                    result: {
-                      short: "Hối hận về quyết định vội vàng",
-                      long: "Cảm giác 'hết yêu' đôi khi là kiệt sức — không phải kết thúc. Đáng suy nghĩ kỹ trước",
-                    },
-                  },
-                  {
-                    id: "A3",
-                    text: "Cả hai đều tổn thương nhưng hiểu nhau",
-                    effect: { trust: 1, conflict: -1, comm: 2 },
-                    result: {
-                      short: "Kết thúc trong tôn trọng",
-                      long: "Chia tay trong hiểu biết là điều hiếm có — nó cho phép cả hai tiếp tục cuộc sống không mang theo vết thương",
-                    },
-                  },
-                ],
-              },
-            },
-            {
-              id: "B",
-              text: "Thử cứu vãn mối quan hệ",
-              effect: { trust: 1, conflict: 0, comm: 2, emotion: 1 },
-              next: {
-                id: "B",
-                desc: "Có cơ hội",
-                choices: [
-                  {
-                    id: "B1",
-                    text: "Tình cảm dần quay lại",
-                    effect: { trust: 3, conflict: -2, comm: 2, emotion: 3 },
-                    result: {
-                      short: "Mối quan hệ được hồi sinh",
-                      long: "Tình yêu có thể mờ dần rồi bùng lên lại — nếu cả hai cùng chọn nhau",
-                    },
-                  },
-                  {
-                    id: "B2",
-                    text: "Nhận ra hai người không hợp nhau",
-                    effect: { trust: 1, conflict: -1, comm: 1 },
-                    result: {
-                      short: "Chia tay trong hiểu biết sâu hơn",
-                      long: "Cố gắng hết sức rồi mới quyết định — không phải sự thất bại, mà là sự trưởng thành",
-                    },
-                  },
-                  {
-                    id: "B3",
-                    text: "Bạn trưởng thành hơn qua quá trình này",
-                    effect: { trust: 1, conflict: 0, comm: 2, emotion: 1 },
-                    result: {
-                      short: "Bài học quý giá cho bạn",
-                      long: "Dù kết quả thế nào, việc cố gắng thật sự dạy bạn rất nhiều về bản thân và tình yêu",
-                    },
-                  },
-                ],
-              },
-            },
-            {
-              id: "C",
-              text: "Cứ để vậy, không quyết định gì",
-              effect: { trust: -1, conflict: 0, comm: -1, emotion: -2 },
-              result: {
-                short: "Mệt mỏi kéo dài, tổn thương âm ỉ",
-                long: "Ở lại mà không có lý do để ở lại — là hình thức giam cầm cả hai trong sự trì trệ",
-              },
-            },
-          ],
-        },
-        {
-          id: "s10",
-          title: "Bị thúc cưới",
-          icon: "🧾",
-          description:
-            "Gia đình bắt đầu giục cưới, nhưng bạn chưa thấy sẵn sàng. Áp lực đang tăng từng ngày.",
-          choices: [
-            {
-              id: "A",
-              text: "Thôi cưới luôn cho xong, chiều gia đình",
-              effect: { trust: -1, conflict: 0, comm: -2, emotion: -2 },
-              result: {
-                short: "Nhanh nhưng rủi ro cao",
-                long: "Hôn nhân vì áp lực không phải nền tảng để xây dựng hạnh phúc — mâu thuẫn sau đám cưới thường nặng hơn",
-              },
-            },
-            {
-              id: "B",
-              text: "Nói rõ: mình cần thêm thời gian",
-              effect: { trust: 2, conflict: -1, comm: 3, emotion: 2 },
-              next: {
-                id: "B",
-                desc: "Quyết định trưởng thành",
-                choices: [
-                  {
-                    id: "B1",
-                    text: "Dành thời gian chuẩn bị tốt hơn",
-                    effect: { trust: 2, conflict: -1, comm: 2 },
-                    result: {
-                      short: "Vào hôn nhân với sự sẵn sàng thật sự",
-                      long: "Thời gian chuẩn bị không phải trì hoãn — mà là sự tôn trọng dành cho quyết định quan trọng nhất cuộc đời",
-                    },
-                  },
-                  {
-                    id: "B2",
-                    text: "Hai người hiểu nhau sâu hơn trong thời gian đó",
-                    effect: { trust: 3, conflict: -1, comm: 3 },
-                    result: {
-                      short: "Mối quan hệ vững hơn trước đám cưới",
-                      long: "Biết nhau thật sự trước khi kết hôn là món quà tốt nhất bạn dành cho hôn nhân",
-                    },
-                  },
-                  {
-                    id: "B3",
-                    text: "Gia đình không đồng ý, tạo thêm áp lực",
-                    effect: { trust: 1, conflict: 1, comm: 2 },
-                    result: {
-                      short: "Giữ được giá trị bản thân dù khó",
-                      long: "Đứng vững trước áp lực gia đình cần hai người đứng cùng nhau — đây là bài kiểm tra quan trọng",
-                    },
-                  },
-                ],
-              },
-            },
-            {
-              id: "C",
-              text: "Từ chối rõ ràng, không muốn kết hôn",
-              effect: { trust: 0, conflict: 1, comm: 2, emotion: 0 },
-              result: {
-                short: "Rõ ràng và trung thực với bản thân",
-                long: "Biết mình muốn gì và không muốn gì là sự trưởng thành — dù quyết định này có thể dẫn đến những thay đổi lớn",
-              },
-            },
-          ],
-        },
-      ];
+/* ─── START SCREEN ─── */
+.hero{text-align:center;padding:2.5rem 0 2rem}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  color:#fff;font-size:.78rem;font-weight:800;letter-spacing:1px;
+  text-transform:uppercase;padding:.45rem 1.2rem;border-radius:50px;
+  margin-bottom:1.4rem;box-shadow:0 4px 16px rgba(236,72,153,.35);
+}
+.hero h1{
+  font-family:'Fraunces',serif;font-style:italic;
+  font-size:3rem;line-height:1.1;margin-bottom:.9rem;
+  background:linear-gradient(135deg,var(--purple-dark) 0%,var(--pink) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero p{color:#6d28d9;font-size:.97rem;line-height:1.75;font-weight:600;max-width:480px;margin:0 auto}
 
-      function clamp(v, min, max) {
-        return Math.min(max, Math.max(min, v));
-      }
+.start-card{
+  background:var(--white);border-radius:var(--r-xl);
+  padding:2rem;box-shadow:var(--shadow-lg);
+  border:2px solid var(--purple-mid);
+}
 
-      let state = {
-        phase: "start",
-        scenarioIdx: 0,
-        currentNode: null,
-        scores: { trust: 0, conflict: 0, comm: 0, emotion: 0 },
-        history: [],
-        breadcrumb: [],
-      };
+.stats-row{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:.65rem;margin-bottom:1.5rem;
+}
+.stat-box{
+  background:linear-gradient(135deg,var(--purple-light),var(--pink-light));
+  border-radius:var(--r);padding:.9rem .5rem;text-align:center;
+  border:2px solid var(--purple-mid);
+}
+.stat-n{
+  font-family:'Fraunces',serif;font-style:italic;
+  font-size:1.9rem;font-weight:700;
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  line-height:1;margin-bottom:.2rem;
+}
+.stat-l{font-size:.7rem;color:var(--purple);font-weight:700;letter-spacing:.3px}
 
-      function applyEffect(effect) {
-        if (!effect) return;
-        for (const k in effect) {
-          state.scores[k] = clamp((state.scores[k] || 0) + effect[k], -10, 10);
-        }
-      }
+.indicators{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:1.6rem}
+.ind-chip{
+  display:flex;align-items:center;gap:.55rem;
+  padding:.65rem .9rem;border-radius:50px;font-size:.82rem;font-weight:700;
+  border:2px solid;
+}
 
-      function getScorePct(val) {
-        return Math.round(((val + 10) / 20) * 100);
-      }
+.btn-main{
+  width:100%;padding:1.05rem;border:none;border-radius:50px;
+  background:linear-gradient(135deg,var(--purple) 0%,var(--pink) 100%);
+  color:#fff;font-family:'Nunito',sans-serif;font-size:1.05rem;font-weight:800;
+  cursor:pointer;letter-spacing:.3px;
+  box-shadow:0 6px 24px rgba(139,92,246,.4);
+  transition:transform .15s,box-shadow .15s;
+}
+.btn-main:hover{transform:translateY(-3px);box-shadow:0 10px 32px rgba(139,92,246,.5)}
+.btn-main:active{transform:translateY(0)}
 
-      function getPersonalityResult() {
-        const { trust, conflict, comm, emotion } = state.scores;
-        if (comm > 3 && conflict < 0)
-          return {
-            type: "Người giao tiếp lành mạnh",
-            color: "#4a8c6e",
-            desc: "Bạn có xu hướng xử lý xung đột bằng giao tiếp cởi mở. Đây là nền tảng vững chắc nhất trong mọi mối quan hệ.",
-            traits: [
-              "Giao tiếp hiệu quả",
-              "Kiểm soát cảm xúc tốt",
-              "Xây dựng niềm tin qua hành động",
-            ],
-          };
-        if (trust > 3 && emotion > 0)
-          return {
-            type: "Người tin tưởng và cởi mở",
-            color: "#3a6c8c",
-            desc: "Bạn có khả năng tin tưởng và trao niềm tin cho người khác. Đây là điểm mạnh nhưng cũng cần có ranh giới.",
-            traits: [
-              "Dễ kết nối cảm xúc",
-              "Sẵn lòng tha thứ",
-              "Cần học cách bảo vệ bản thân hơn",
-            ],
-          };
-        if (conflict > 3 && emotion < -2)
-          return {
-            type: "Người xử lý cảm xúc mạnh",
-            color: "#c4503a",
-            desc: "Bạn phản ứng mạnh với cảm xúc và dễ xung đột. Sức mạnh cảm xúc là tài sản nếu được định hướng đúng.",
-            traits: [
-              "Cảm xúc phong phú và sâu sắc",
-              "Dễ bị tổn thương",
-              "Cần học kỹ thuật điều tiết cảm xúc",
-            ],
-          };
-        if (comm < -2 && trust < -2)
-          return {
-            type: "Người né tránh xung đột",
-            color: "#8c5a3a",
-            desc: "Bạn có xu hướng im lặng để tránh căng thẳng. Điều này bảo vệ bạn ngắn hạn nhưng tích tụ dài hạn.",
-            traits: [
-              "Tránh xung đột trực tiếp",
-              "Ưu tiên hòa khí bề mặt",
-              "Cần tập nói ra cảm xúc an toàn hơn",
-            ],
-          };
-        return {
-          type: "Người đang học cân bằng",
-          color: "#6b6460",
-          desc: "Bạn đang trên hành trình học cách cân bằng cảm xúc, giao tiếp và ranh giới. Đây là điều rất bình thường.",
-          traits: [
-            "Đang phát triển kỹ năng giao tiếp",
-            "Nhận thức tốt về bản thân",
-            "Tiềm năng phát triển lớn",
-          ],
-        };
-      }
+/* ─── PROGRESS ─── */
+.progress-wrap{margin-bottom:1.8rem}
+.progress-meta{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:.55rem;
+}
+.progress-label{
+  font-size:.78rem;font-weight:800;color:var(--purple);letter-spacing:.8px;text-transform:uppercase;
+}
+.progress-frac{
+  background:var(--purple-light);color:var(--purple-dark);
+  font-size:.78rem;font-weight:800;padding:.2rem .65rem;border-radius:20px;
+}
+.progress-track{background:#e9d5ff;border-radius:50px;height:10px;overflow:hidden}
+.progress-fill{
+  height:100%;border-radius:50px;
+  background:linear-gradient(90deg,var(--purple),var(--pink));
+  transition:width .5s cubic-bezier(.4,0,.2,1);
+}
 
-      function render() {
-        const app = document.getElementById("app");
-        if (state.phase === "start") {
-          renderStart(app);
-          return;
-        }
-        if (state.phase === "playing") {
-          renderPlaying(app);
-          return;
-        }
-        if (state.phase === "result") {
-          renderResult(app);
-          return;
-        }
-      }
+/* ─── SCORES PANEL ─── */
+.scores-panel{
+  background:var(--white);border-radius:var(--r-lg);
+  padding:1.4rem 1.5rem;margin-bottom:1.4rem;
+  box-shadow:var(--shadow);border:2px solid var(--purple-light);
+}
+.scores-title{
+  font-size:.72rem;font-weight:800;color:var(--text3);
+  letter-spacing:1.2px;text-transform:uppercase;margin-bottom:1rem;
+}
+.score-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.score-box{
+  background:var(--bg);border-radius:var(--r);
+  padding:.75rem .9rem;border:2px solid;
+}
+.score-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem}
+.score-name{font-size:.78rem;font-weight:800}
+.score-num{font-size:.88rem;font-weight:900}
+.score-bar-wrap{background:rgba(255,255,255,.7);border-radius:50px;height:7px;overflow:hidden}
+.score-bar-inner{height:100%;border-radius:50px;transition:width .5s cubic-bezier(.4,0,.2,1)}
 
-      function renderStart(app) {
-        app.innerHTML = `
-    <div class="header fade-in">
-      <div class="tagline">Game tâm lý tình yêu</div>
-      <h1>Tình yêu · Lựa chọn · Hậu quả</h1>
-      <p>10 tình huống thực tế trong mối quan hệ. Mỗi lựa chọn dẫn đến một chuỗi hậu quả khác nhau — không có đáp án đúng hay sai.</p>
+/* ─── SCENARIO CARD ─── */
+.scene-card{
+  background:var(--white);border-radius:var(--r-lg);
+  overflow:hidden;margin-bottom:1.4rem;
+  box-shadow:var(--shadow);
+  border:2px solid var(--purple-light);
+}
+.scene-top{
+  padding:1.4rem 1.6rem 1.2rem;
+  background:linear-gradient(135deg,var(--purple-light) 0%,var(--pink-light) 100%);
+  border-bottom:2px solid var(--purple-mid);
+  display:flex;align-items:center;gap:1rem;
+}
+.scene-emoji{
+  width:56px;height:56px;min-width:56px;
+  background:var(--white);border-radius:var(--r);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.7rem;box-shadow:0 2px 12px rgba(139,92,246,.2);
+  border:2px solid var(--purple-mid);
+}
+.scene-num{
+  font-size:.7rem;font-weight:800;letter-spacing:1.2px;
+  text-transform:uppercase;color:var(--purple);margin-bottom:.3rem;
+}
+.scene-title{
+  font-family:'Fraunces',serif;font-style:italic;
+  font-size:1.3rem;color:var(--text);line-height:1.2;
+}
+.scene-body{padding:1.2rem 1.6rem}
+.scene-desc{
+  font-size:.9rem;color:#4c1d95;line-height:1.75;font-weight:600;
+  background:var(--purple-light);
+  padding:.9rem 1.1rem;border-radius:var(--r);
+  border-left:4px solid var(--purple);
+}
+
+/* ─── BREADCRUMB ─── */
+.breadcrumb{display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem}
+.bc-item{
+  font-size:.74rem;color:#fff;
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  padding:.25rem .7rem;border-radius:20px;font-weight:800;
+  box-shadow:0 2px 8px rgba(139,92,246,.3);
+}
+.bc-sep{color:var(--text3);font-size:.8rem}
+
+/* ─── QUESTION LABEL ─── */
+.q-label{
+  text-align:center;font-size:.82rem;font-weight:800;color:var(--purple);
+  letter-spacing:.5px;text-transform:uppercase;
+  margin-bottom:1rem;
+  display:flex;align-items:center;gap:.6rem;
+}
+.q-label::before,.q-label::after{content:'';flex:1;height:2px;background:linear-gradient(90deg,transparent,var(--purple-mid))}
+.q-label::after{background:linear-gradient(90deg,var(--purple-mid),transparent)}
+
+/* ─── CHOICE BUTTONS ─── */
+.choices-list{display:flex;flex-direction:column;gap:.85rem}
+.choice-btn{
+  background:var(--white);
+  border:2px solid var(--purple-mid);
+  border-radius:var(--r-lg);
+  padding:1.1rem 1.3rem;
+  cursor:pointer;text-align:left;width:100%;
+  transition:all .2s cubic-bezier(.4,0,.2,1);
+  display:flex;flex-direction:column;gap:.6rem;
+}
+.choice-btn:hover{
+  border-color:var(--purple);
+  background:linear-gradient(135deg,var(--purple-light) 0%,var(--pink-light) 100%);
+  transform:translateY(-3px) scale(1.01);
+  box-shadow:0 8px 28px rgba(139,92,246,.22);
+}
+.choice-btn:active{transform:translateY(-1px) scale(1)}
+
+.choice-row{display:flex;align-items:flex-start;gap:.85rem}
+.choice-id{
+  min-width:36px;height:36px;
+  border-radius:10px;
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  color:#fff;font-size:.88rem;font-weight:900;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 3px 10px rgba(139,92,246,.35);
+  flex-shrink:0;
+}
+.choice-text{
+  font-size:.94rem;color:var(--text);font-weight:700;
+  line-height:1.5;padding-top:.1rem;
+}
+.etags{display:flex;flex-wrap:wrap;gap:.4rem;padding-left:0}
+.etag{
+  font-size:.71rem;font-weight:800;
+  padding:.22rem .65rem;border-radius:50px;border:2px solid;
+}
+.et-trust  {background:var(--green-light);color:#065f46;border-color:var(--green-mid)}
+.et-conflict{background:var(--red-light);color:#991b1b;border-color:var(--red-mid)}
+.et-comm   {background:var(--cyan-light);color:#164e63;border-color:var(--cyan-mid)}
+.et-emotion{background:var(--orange-light);color:#92400e;border-color:var(--orange-mid)}
+
+/* ─── CONSEQUENCE ─── */
+.consequence{
+  margin-top:1.1rem;
+  background:linear-gradient(135deg,#fdf4ff 0%,#fce7f3 100%);
+  border:2px solid var(--pink-mid);
+  border-radius:var(--r-lg);
+  padding:1.4rem 1.6rem;
+}
+.cons-badge{
+  display:inline-flex;align-items:center;gap:7px;
+  background:linear-gradient(135deg,var(--pink),var(--purple));
+  color:#fff;font-size:.7rem;font-weight:800;
+  padding:.3rem .9rem;border-radius:50px;letter-spacing:.8px;
+  text-transform:uppercase;margin-bottom:.85rem;
+  box-shadow:0 3px 12px rgba(236,72,153,.3);
+}
+.cons-short{
+  font-family:'Fraunces',serif;font-style:italic;
+  font-size:1.2rem;color:var(--text);margin-bottom:.7rem;line-height:1.3;
+}
+.cons-long{
+  font-size:.88rem;color:#4c1d95;font-weight:600;line-height:1.75;
+  background:rgba(255,255,255,.8);
+  padding:.85rem 1.05rem;border-radius:var(--r);
+  border-left:4px solid var(--pink);
+}
+
+/* ─── NAV BUTTONS ─── */
+.nav-btns{display:flex;gap:.75rem;margin-top:1.2rem;flex-wrap:wrap}
+.btn-next{
+  padding:.75rem 1.5rem;border:none;border-radius:50px;
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  color:#fff;font-family:'Nunito',sans-serif;font-size:.9rem;font-weight:800;
+  cursor:pointer;box-shadow:0 4px 16px rgba(139,92,246,.35);
+  transition:transform .15s,box-shadow .15s;
+}
+.btn-next:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(139,92,246,.45)}
+.btn-back{
+  padding:.75rem 1.25rem;border-radius:50px;
+  background:var(--white);color:var(--purple);
+  font-family:'Nunito',sans-serif;font-size:.9rem;font-weight:800;
+  cursor:pointer;border:2px solid var(--purple-mid);
+  transition:all .15s;
+}
+.btn-back:hover{background:var(--purple-light);border-color:var(--purple)}
+
+/* ─── RESULT SCREEN ─── */
+.result-card{
+  background:var(--white);border-radius:var(--r-xl);
+  padding:2rem;box-shadow:var(--shadow-lg);
+  border:2px solid var(--purple-mid);
+}
+.result-header{text-align:center;margin-bottom:1.5rem}
+.result-icon{
+  font-size:3.5rem;margin-bottom:.6rem;
+  filter:drop-shadow(0 4px 12px rgba(139,92,246,.3));
+}
+.result-type{
+  display:inline-block;padding:.4rem 1.3rem;border-radius:50px;
+  font-size:.82rem;font-weight:800;letter-spacing:.5px;margin-bottom:1rem;
+  border:2px solid;
+}
+.result-name{
+  font-family:'Fraunces',serif;font-style:italic;
+  font-size:1.9rem;color:var(--text);margin-bottom:.5rem;line-height:1.2;
+}
+.result-desc{
+  font-size:.9rem;color:#4c1d95;font-weight:600;line-height:1.75;
+  background:var(--purple-light);
+  padding:1rem 1.2rem;border-radius:var(--r);
+  border-left:4px solid var(--purple);
+  margin-bottom:1.4rem;text-align:left;
+}
+.traits-row{display:grid;grid-template-columns:repeat(3,1fr);gap:.65rem;margin-bottom:1.4rem}
+.trait-box{
+  background:linear-gradient(135deg,var(--purple-light),var(--pink-light));
+  border-radius:var(--r);padding:.85rem .8rem;
+  border:2px solid var(--purple-mid);text-align:center;
+}
+.trait-emoji{font-size:1.3rem;margin-bottom:.35rem}
+.trait-text{font-size:.78rem;color:var(--text);font-weight:700;line-height:1.35}
+
+.divider{border:none;border-top:2px solid var(--purple-light);margin:1.4rem 0}
+.final-scores-title{font-size:.72rem;font-weight:800;color:var(--text3);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:1rem}
+.final-score-row{
+  display:flex;align-items:center;gap:.75rem;margin-bottom:.7rem;
+}
+.fsr-label{font-size:.82rem;font-weight:800;color:var(--text);min-width:130px}
+.fsr-track{flex:1;background:#ede9fe;border-radius:50px;height:10px;overflow:hidden}
+.fsr-bar{height:100%;border-radius:50px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.fsr-val{font-size:.82rem;font-weight:900;min-width:36px;text-align:right}
+
+/* ─── ANIMATION ─── */
+@keyframes popUp{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+.fade-in{animation:popUp .35s cubic-bezier(.4,0,.2,1) forwards}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const SCENARIOS=[
+  {id:"s1",title:"Nghi ngờ ngoại tình",icon:"🧠",
+   desc:"Dạo gần đây bạn thấy người yêu hay giấu điện thoại, nhắn tin lúc khuya rồi quay lưng lại. Cảm giác \"có gì đó không ổn\" cứ ám ảnh bạn mỗi ngày.",
+   choices:[
+    {id:"A",text:"Hỏi thẳng luôn cho rõ",effect:{trust:-1,conflict:2,comm:-1,emotion:-2},
+     next:{id:"A",desc:"Họ bất ngờ, hơi phòng thủ",choices:[
+      {id:"A1",text:"Hỏi dồn dập, không cho họ giải thích",effect:{trust:-2,conflict:3,emotion:-2},
+       next:{id:"A1",desc:"Họ bắt đầu khó chịu",choices:[
+        {id:"A1a",text:"Họ cáu và phản công lại",effect:{trust:-2,conflict:2},result:{short:"Hai người cãi nhau rất lớn",long:"Khoảng cách cảm xúc tăng dần — mất an toàn trong mối quan hệ là hậu quả kéo dài nhất."}},
+        {id:"A1b",text:"Họ im lặng, bỏ đi không nói gì",effect:{trust:-3,conflict:1},result:{short:"Bạn hoang mang, nghi ngờ càng tăng",long:"Thiếu tin tưởng nghiêm trọng — mối quan hệ dễ rơi vào vòng xoáy nghi ngờ không hồi kết."}}
+       ]}},
+      {id:"A2",text:"Cố giữ bình tĩnh khi hỏi",effect:{trust:0,conflict:1,comm:1},
+       next:{id:"A2",desc:"Họ bắt đầu giải thích",choices:[
+        {id:"A2a",text:"Vẫn nghi ngờ, bắt đầu kiểm tra điện thoại",effect:{trust:-3,conflict:2,emotion:-2},result:{short:"Phát hiện thêm hoặc tự dằn vặt mình",long:"Dù có hay không có bằng chứng — hành động kiểm tra điện thoại thường làm tổn thương cả hai người."}},
+        {id:"A2b",text:"Chọn tin tưởng và buông bỏ nghi ngờ",effect:{trust:2,conflict:-1,emotion:1},result:{short:"Nhẹ lòng — mối quan hệ có cơ hội hồi phục",long:"Niềm tin được trao — nếu lý do là thật, đây là nền tảng để cả hai gắn kết hơn từng ngày."}}
+       ]}},
+      {id:"A3",text:"Mất kiểm soát, nói những câu rất nặng",effect:{trust:-3,conflict:3,emotion:-3},result:{short:"Không khí cực kỳ căng, cả hai tổn thương",long:"Những câu nói trong lúc mất kiểm soát thường để lại vết thương lâu nhất — đôi khi không lành được."}}
+     ]}},
+    {id:"B",text:"Chọn lúc phù hợp, nói chuyện nhẹ nhàng",effect:{trust:1,conflict:-1,comm:2,emotion:1},
+     next:{id:"B",desc:"Họ có vẻ cởi mở hơn",choices:[
+      {id:"B1",text:"Họ thừa nhận có vấn đề thật",effect:{trust:0,conflict:1,comm:3},
+       next:{id:"B1",desc:"Bạn sốc nhưng biết sự thật",choices:[
+        {id:"B1a",text:"Cùng đặt lại ranh giới, xây dựng lại niềm tin",effect:{trust:3,conflict:-2,comm:3},result:{short:"Mối quan hệ trưởng thành và bền vững hơn",long:"Đối diện sự thật và cùng nhau vượt qua — đây là dấu hiệu của tình yêu thật sự trưởng thành."}},
+        {id:"B1b",text:"Không vượt qua được, chia tay nhẹ nhàng",effect:{trust:1,conflict:-1,comm:2},result:{short:"Ít tổn thương hơn cách chia tay thông thường",long:"Kết thúc trong tôn trọng là điều không phải ai cũng làm được — đó là sự dũng cảm."}}
+       ]}},
+      {id:"B2",text:"Họ phủ nhận và chối thẳng",effect:{trust:-2,conflict:1},result:{short:"Bạn hoang mang hơn trước khi hỏi",long:"Khi câu trả lời không thỏa đáng, hãy tin vào cảm xúc của mình và tiếp tục quan sát thêm."}},
+      {id:"B3",text:"Họ né tránh, câu chuyện bị bỏ lửng",effect:{trust:-1,conflict:1,comm:-1},result:{short:"Vấn đề treo lơ lửng, không được giải quyết",long:"Né tránh chỉ trì hoãn — không giải quyết. Hãy tìm lúc khác phù hợp hơn để tiếp tục."}}
+     ]}},
+    {id:"C",text:"Im lặng, tự quan sát thêm",effect:{trust:0,conflict:0,comm:-2,emotion:-2},
+     next:{id:"C",desc:"Bạn suy nghĩ quá nhiều mỗi ngày",choices:[
+      {id:"C1",text:"Thấy thêm dấu hiệu → bùng nổ mạnh hơn",effect:{trust:-3,conflict:3,emotion:-3},result:{short:"Cảm xúc dồn nén → xung đột cực lớn",long:"Càng chờ, cảm xúc càng tích tụ và dễ gây ra những điều khó kiểm soát về sau."}},
+      {id:"C2",text:"Không có gì rõ, bắt đầu tự nghi ngờ bản thân",effect:{trust:-1,emotion:-3},result:{short:"Lo âu kéo dài, mất tự tin vào mình",long:"Nghi ngờ chính cảm nhận của bản thân — đây là dấu hiệu bạn đang cần một cuộc trò chuyện thật sự."}},
+      {id:"C3",text:"Tưởng tượng nhiều thứ, kiệt sức",effect:{trust:-2,conflict:1,emotion:-3},result:{short:"Mệt mỏi từ bên trong, không ngủ được",long:"Tâm trí bạn đang làm việc quá tải — hãy cho bản thân một cuộc trò chuyện thật, dù sợ."}}
+     ]}}
+   ]},
+  {id:"s2",title:"Mâu thuẫn tiền bạc",icon:"💰",
+   desc:"Hai người bắt đầu bàn chuyện cưới, nhưng bạn nhận ra cách tiêu tiền quá khác nhau — bạn muốn tiết kiệm trong khi người kia chi tiêu rất thoải mái.",
+   choices:[
+    {id:"A",text:"Nói thẳng: cách tiêu tiền đó là không ổn",effect:{trust:-1,conflict:2,comm:-1,emotion:-1},
+     next:{id:"A",desc:"Không khí trở nên căng ngay",choices:[
+      {id:"A1",text:"Nói mạnh — họ phản ứng gay gắt",effect:{trust:-2,conflict:3,emotion:-2},
+       next:{id:"A1",desc:"Tranh luận leo thang",choices:[
+        {id:"A1a",text:"Ai cũng muốn thắng, không ai chịu nghe",effect:{trust:-2,conflict:3},result:{short:"Xung đột lặp đi lặp lại theo chu kỳ",long:"Mâu thuẫn tiền bạc không giải quyết bằng ai đúng hơn — mà bằng ai sẵn lòng lắng nghe trước."}},
+        {id:"A1b",text:"Một người nhượng bộ nhưng không thật lòng",effect:{trust:-1,conflict:1,emotion:-2},result:{short:"Tạm yên nhưng bất mãn tích tụ dần",long:"Nhượng bộ để tránh tranh cãi không phải giải pháp — sẽ tái phát với mức độ lớn hơn."}}
+       ]}},
+      {id:"A2",text:"Cố giải thích bằng logic, tranh luận dài",effect:{trust:0,conflict:2,comm:1},result:{short:"Hiểu nhau hơn nhưng chưa đồng thuận",long:"Ít nhất cả hai đều lắng nghe — đây là bước đầu cần thiết của mọi thỏa thuận bền vững."}},
+      {id:"A3",text:"Áp đặt, muốn họ phải theo ý mình",effect:{trust:-2,conflict:2,comm:-1},result:{short:"Họ bề ngoài đồng ý, bên trong khó chịu",long:"Kiểm soát tài chính của người khác thường dẫn đến sự phản kháng ngầm ngày càng lớn hơn."}}
+     ]}},
+    {id:"B",text:"Ngồi nói chuyện bình tĩnh, tìm điểm chung",effect:{trust:2,conflict:-1,comm:3,emotion:1},
+     next:{id:"B",desc:"Hai người hợp tác và cởi mở hơn",choices:[
+      {id:"B1",text:"Cùng lập kế hoạch chi tiêu cụ thể",effect:{trust:3,conflict:-2,comm:3},result:{short:"Tài chính ổn định, cảm giác an toàn tăng",long:"Có nguyên tắc chung về tiền bạc là nền tảng quan trọng nhất cho bất kỳ cuộc hôn nhân nào."}},
+      {id:"B2",text:"Chưa thống nhất — thử phương án trung gian",effect:{trust:1,conflict:0,comm:2},result:{short:"Chấp nhận được, nhưng vẫn còn lấn cấn",long:"Trung gian là điểm khởi đầu tốt — cần nói thêm nhiều lần để tìm ra điều thực sự phù hợp."}},
+      {id:"B3",text:"Một người nhường nhiều để kết thúc",effect:{trust:0,comm:1,emotion:-1},result:{short:"Có chút mất cân bằng trong quan hệ",long:"Nhường quá nhiều trong thời gian dài tạo ra sự bất bình đẳng vô hình — cần theo dõi thêm."}}
+     ]}},
+    {id:"C",text:"Thôi kệ, tránh đụng đến chủ đề tiền",effect:{trust:-1,conflict:0,comm:-2,emotion:-1},
+     next:{id:"C",desc:"Tránh được căng thẳng nhất thời",choices:[
+      {id:"C1",text:"Nợ và chi phí bắt đầu tích tụ",effect:{trust:-2,conflict:2,emotion:-2},result:{short:"Đổ lỗi cho nhau khi mọi thứ vỡ ra",long:"Vấn đề tài chính không tự biến mất — im lặng chỉ là lãi suất đang cộng dồn từng ngày."}},
+      {id:"C2",text:"Mỗi người quản lý tiền theo kiểu riêng",effect:{trust:-1,conflict:1,comm:-2},result:{short:"Xa cách dần về mặt thực tế cuộc sống",long:"Tài chính là cuộc sống hàng ngày — không nói được về điều này sẽ khó nói về nhiều thứ khác."}},
+      {id:"C3",text:"Đến lúc lớn chuyện thì mọi thứ vỡ toang",effect:{trust:-3,conflict:3,emotion:-2},result:{short:"Tổn thương nặng khi mâu thuẫn bùng phát",long:"Mâu thuẫn bị chôn vùi thường tái hiện với cường độ gấp đôi khi không còn chịu được."}}
+     ]}}
+   ]},
+  {id:"s3",title:"Gia đình can thiệp",icon:"👨‍👩‍👧",
+   desc:"Gia đình người kia can thiệp thường xuyên vào chuyện riêng của hai bạn — từ những quyết định nhỏ đến những chuyện quan trọng nhất.",
+   choices:[
+    {id:"A",text:"Nói thẳng: tôi không thích điều này",effect:{trust:-1,conflict:2,comm:0,emotion:-1},
+     next:{id:"A",desc:"Người kia rơi vào tình huống khó xử",choices:[
+      {id:"A1",text:"Họ đứng về phía gia đình — bạn thấy bị bỏ rơi",effect:{trust:-3,conflict:2,emotion:-3},result:{short:"Mất niềm tin, xa cách về cảm xúc",long:"Khi người yêu chọn gia đình trong mọi tình huống — đây là ranh giới cần được nói ra rõ ràng."}},
+      {id:"A2",text:"Họ hiểu nhưng không biết phải làm gì",effect:{trust:1,conflict:0,comm:1},result:{short:"Thông cảm nhưng vẫn áp lực mỗi ngày",long:"Hiểu vấn đề là bước đầu — thay đổi cần thời gian và nỗ lực thực sự từ cả hai phía."}},
+      {id:"A3",text:"Hai người bắt đầu căng thẳng với nhau",effect:{trust:-1,conflict:2,emotion:-2},result:{short:"Không khí nặng nề và mệt mỏi",long:"Vấn đề gia đình cần giải quyết như một đội — không phải đứng đối địch với nhau."}}
+     ]}},
+    {id:"B",text:"Nói nhẹ nhàng, cùng tìm cách dung hòa",effect:{trust:2,conflict:-1,comm:3,emotion:1},
+     next:{id:"B",desc:"Không khí nhẹ nhàng và hợp tác hơn",choices:[
+      {id:"B1",text:"Hai người thống nhất đặt ranh giới với gia đình",effect:{trust:3,conflict:-2,comm:3},result:{short:"Gia đình dần tôn trọng — mối quan hệ vững hơn",long:"Khi đôi bạn đứng cùng nhau và tôn trọng nhau — gia đình hai bên sẽ dần học cách điều chỉnh."}},
+      {id:"B2",text:"Chưa thống nhất, cần nói thêm nhiều lần",effect:{trust:1,conflict:0,comm:2},result:{short:"Có tiến triển nhưng cần rất nhiều kiên nhẫn",long:"Vấn đề gia đình thường cần nhiều cuộc trò chuyện — điều quan trọng là không bỏ cuộc giữa chừng."}},
+      {id:"B3",text:"Bạn phải nhẫn nhịn nhiều hơn",effect:{trust:1,conflict:-1,comm:1,emotion:-1},result:{short:"Hòa khí tạm thời",long:"Nhẫn nhịn có giới hạn — hãy đảm bảo bạn cũng được lắng nghe, không chỉ luôn nhường."}}
+     ]}},
+    {id:"C",text:"Không nói gì, tự chịu đựng bên trong",effect:{trust:-1,conflict:0,comm:-2,emotion:-2},
+     next:{id:"C",desc:"Bề ngoài yên ổn, bên trong không",choices:[
+      {id:"C1",text:"Bạn khó chịu ngày càng nhiều",effect:{trust:-1,conflict:1,emotion:-2},result:{short:"Một ngày nào đó sẽ bùng nổ",long:"Cảm xúc bị nén lại không biến mất — chúng tìm cách thoát ra theo cách thường không đẹp."}},
+      {id:"C2",text:"Gia đình can thiệp ngày càng nhiều hơn",effect:{trust:-2,conflict:2,emotion:-2},result:{short:"Ranh giới ngày càng mờ nhạt",long:"Khi bạn không lên tiếng, người khác sẽ lấp đầy khoảng trống đó — đó là quy luật tự nhiên."}},
+      {id:"C3",text:"Mọi thứ tích tụ rồi vỡ ra đột ngột",effect:{trust:-3,conflict:3,emotion:-3},result:{short:"Tổn thương sâu và rất khó hàn gắn",long:"Đỉnh điểm của sự im lặng thường là một cơn bùng phát không ai chuẩn bị trước được."}}
+     ]}}
+   ]},
+  {id:"s4",title:"Ít nói chuyện với nhau",icon:"💬",
+   desc:"Dạo này hai người nói chuyện ít hẳn — chủ yếu chỉ \"ăn chưa\", \"đi đâu\". Không còn những cuộc trò chuyện thật sự nữa.",
+   choices:[
+    {id:"A",text:"Nói thẳng: tôi thấy tụi mình đang xa nhau",effect:{trust:1,conflict:1,comm:2},
+     next:{id:"A",desc:"Người kia khá bất ngờ",choices:[
+      {id:"A1",text:"Họ lắng nghe và bắt đầu mở lòng",effect:{trust:2,conflict:-1,comm:3},result:{short:"Kết nối được khơi lại tự nhiên",long:"Đôi khi chỉ cần một người dũng cảm nói ra — điều đó có thể thay đổi rất nhiều."}},
+      {id:"A2",text:"Họ khó chịu, câu chuyện thành tranh cãi",effect:{trust:-1,conflict:2,comm:-1},result:{short:"Cố gắng kết nối nhưng đi lạc hướng",long:"Thời điểm và cách nói rất quan trọng — thử lại vào lúc cả hai thực sự bình tĩnh hơn."}},
+      {id:"A3",text:"Hai người hiểu sai ý nhau hoàn toàn",effect:{trust:-1,conflict:1,comm:-1},result:{short:"Ý tốt nhưng kết quả ngược lại",long:"Giao tiếp là kỹ năng có thể học — đôi khi cần nói chuyện về cách mình nói chuyện với nhau."}}
+     ]}},
+    {id:"B",text:"Chủ động rủ đi chơi, tạo kỷ niệm mới",effect:{trust:2,conflict:-1,comm:1,emotion:2},
+     next:{id:"B",desc:"Không khí nhẹ nhàng hơn",choices:[
+      {id:"B1",text:"Hai người vui lại, kết nối trở lại tự nhiên",effect:{trust:2,conflict:-1,comm:2,emotion:2},result:{short:"Mối quan hệ được hâm nóng trở lại",long:"Kỷ niệm chung là nền tảng của mối quan hệ — hãy cố tạo thêm chúng mỗi tuần."}},
+      {id:"B2",text:"Chỉ vui lúc đó, về nhà lại như cũ",effect:{trust:0,conflict:0,comm:0},result:{short:"Cần giải quyết gốc rễ sâu hơn",long:"Vui chơi là thuốc bổ, không phải thuốc chữa — cần nói thật về khoảng cách đang có."}},
+      {id:"B3",text:"Cần kiên trì dài lâu, không phải một lần",effect:{trust:1,conflict:-1,comm:1},result:{short:"Đang đi đúng hướng",long:"Xây dựng thói quen kết nối mỗi ngày — dù nhỏ — quan trọng hơn những chuyến đi lớn."}}
+     ]}},
+    {id:"C",text:"Thôi kệ, ai cũng bận mà",effect:{trust:-1,conflict:0,comm:-3,emotion:-1},
+     next:{id:"C",desc:"Hai người dần xa nhau từng ngày",choices:[
+      {id:"C1",text:"Ít quan tâm nhau hơn theo thời gian",effect:{trust:-2,comm:-2},result:{short:"Dần trở thành người quen cùng nhà",long:"Khoảng cách cảm xúc thường bắt đầu từ những việc tưởng như bình thường và vô hại này."}},
+      {id:"C2",text:"Không còn chia sẻ — mỗi người một thế giới",effect:{trust:-2,comm:-3,emotion:-1},result:{short:"Cô đơn ngay trong mối quan hệ",long:"Đây là dấu hiệu nghiêm trọng — cần hành động sớm trước khi khoảng cách trở nên quá lớn."}},
+      {id:"C3",text:"Cảm giác như đang sống cùng người lạ",effect:{trust:-3,comm:-3,emotion:-3},result:{short:"Xa cách đã trở thành thói quen",long:"Ở thời điểm này, cần một cuộc trò chuyện thẳng thắn và thành thật về tương lai của cả hai."}}
+     ]}}
+   ]},
+  {id:"s5",title:"Khác nhau về cách sống",icon:"🌀",
+   desc:"Bạn thích ổn định, kế hoạch rõ ràng. Người kia thích tự do, thay đổi liên tục. Sự khác nhau bắt đầu tạo ra ma sát ngày càng rõ.",
+   choices:[
+    {id:"A",text:"Muốn họ thay đổi để giống mình hơn",effect:{trust:-2,conflict:2,comm:-1,emotion:-1},result:{short:"Họ thấy bị ép buộc, không thoải mái",long:"Không ai nên từ bỏ bản sắc của mình vì tình yêu — tìm điểm dung hòa thay vì yêu cầu thay đổi."}},
+    {id:"B",text:"Chấp nhận sự khác nhau, tìm điểm chung",effect:{trust:2,conflict:-1,comm:2,emotion:2},
+     next:{id:"B",desc:"Không khí nhẹ nhàng, cởi mở hơn",choices:[
+      {id:"B1",text:"Hai người học cách dung hòa cả hai phong cách",effect:{trust:3,conflict:-2,comm:2},result:{short:"Mối quan hệ phong phú và thú vị hơn nhiều",long:"Sự khác biệt không phải vấn đề — cách hai người phản ứng với nó mới thực sự là vấn đề."}},
+      {id:"B2",text:"Có lúc vẫn khó chịu nhưng cùng cố gắng",effect:{trust:1,conflict:1,comm:1},result:{short:"Tiến trình không thẳng nhưng đúng hướng",long:"Chấp nhận không có nghĩa là không bao giờ khó chịu — mà là chọn hiểu hơn chọn phán xét."}},
+      {id:"B3",text:"Đặt ranh giới rõ ràng cho từng người",effect:{trust:2,conflict:-1,comm:2},result:{short:"Ranh giới lành mạnh tạo ra tự do trong tình yêu",long:"Biết điều gì không thể thỏa hiệp giúp cả hai tránh xung đột không cần thiết về sau."}}
+     ]}},
+    {id:"C",text:"Né tránh, giả vờ như không có vấn đề gì",effect:{trust:-1,conflict:0,comm:-2,emotion:-1},result:{short:"Mâu thuẫn âm ỉ rồi sẽ bùng lên",long:"Những điều không được nói ra không biến mất — chúng âm thầm định hình hành vi và cảm xúc."}}
+   ]},
+  {id:"s6",title:"Ghen tuông",icon:"😡",
+   desc:"Bạn thấy người yêu nói chuyện khá thân mật với người khác. Cảm giác không thoải mái xuất hiện và ngày càng lớn dần trong lòng bạn.",
+   choices:[
+    {id:"A",text:"Kiểm soát họ, hạn chế giao tiếp của họ",effect:{trust:-3,conflict:3,comm:-2,emotion:-2},result:{short:"Họ phản kháng hoặc bắt đầu giấu giếm",long:"Kiểm soát xuất phát từ sợ hãi — nhưng nó thường tạo ra chính điều bạn đang sợ nhất."}},
+    {id:"B",text:"Nói thật về cảm xúc của mình",effect:{trust:2,conflict:-1,comm:3,emotion:1},
+     next:{id:"B",desc:"Họ hiểu và đồng cảm với bạn hơn",choices:[
+      {id:"B1",text:"Họ trấn an và giải thích rõ ràng",effect:{trust:3,conflict:-2,comm:2},result:{short:"Niềm tin được củng cố vững chắc hơn",long:"Ghen tuông lành mạnh là tín hiệu — nói ra và được trấn an là cách xử lý tốt và lành mạnh nhất."}},
+      {id:"B2",text:"Hai người hiểu nhau hơn về ranh giới",effect:{trust:2,conflict:-1,comm:3},result:{short:"Mối quan hệ rõ ràng và an toàn hơn nhiều",long:"Cuộc trò chuyện về ranh giới là một trong những cuộc trò chuyện quan trọng nhất trong tình yêu."}},
+      {id:"B3",text:"Cần thêm thời gian để xây dựng niềm tin",effect:{trust:1,comm:2},result:{short:"Đang đi đúng hướng, tiếp tục",long:"Niềm tin không thể ép buộc — nhưng được nuôi dưỡng qua những hành động nhất quán mỗi ngày."}}
+     ]}},
+    {id:"C",text:"Giữ trong lòng, không nói ra với ai",effect:{trust:-1,comm:-2,emotion:-3},result:{short:"Tự mệt mỏi rồi bùng nổ về sau",long:"Cảm xúc ghen tuông cần được xử lý — trước khi nó trở thành bức tường ngăn cách hai người."}}
+   ]},
+  {id:"s7",title:"Không dành thời gian",icon:"🕰️",
+   desc:"Người kia lúc nào cũng bận. Bạn cảm thấy mình không còn là ưu tiên trong cuộc sống của họ — và điều đó đau hơn bạn tưởng rất nhiều.",
+   choices:[
+    {id:"A",text:"Than phiền và bày tỏ sự không hài lòng",effect:{trust:-1,conflict:2,comm:0,emotion:-1},
+     next:{id:"A",desc:"Họ cảm thấy áp lực và tội lỗi",choices:[
+      {id:"A1",text:"Họ cố thay đổi vì cảm thấy tội lỗi",effect:{trust:0,conflict:1,comm:1},result:{short:"Thay đổi từ tội lỗi thường không bền vững",long:"Thay đổi vì tình yêu bền hơn thay đổi vì tội lỗi — hãy nói về điều bạn cần, không chỉ điều bạn thiếu."}},
+      {id:"A2",text:"Họ khó chịu, cảm thấy bị phán xét",effect:{trust:-1,conflict:2,emotion:-1},result:{short:"Xa cách thêm thay vì gần nhau hơn",long:"Không ai muốn ở gần người khiến họ cảm thấy tồi tệ — cách nói hoàn toàn quyết định kết quả."}},
+      {id:"A3",text:"Họ né tránh nhiều hơn vì áp lực",effect:{trust:-2,conflict:2,comm:-2},result:{short:"Vòng lặp tiêu cực hình thành rõ ràng",long:"Than phiền → người kia né → bạn cô đơn hơn → than phiền nhiều hơn. Cần phá vỡ vòng lặp này."}}
+     ]}},
+    {id:"B",text:"Chủ động tạo thời gian, rủ làm gì đó cùng",effect:{trust:2,conflict:-1,comm:2,emotion:2},result:{short:"Tích cực — gần nhau hơn dần từng ngày",long:"Tạo ra thời gian chung là hành động của tình yêu — không phải chờ đợi người kia tự nhận ra."}},
+    {id:"C",text:"Mặc kệ, tự lo mọi thứ một mình",effect:{trust:-2,comm:-3,emotion:-2},result:{short:"Xa nhau dần, lạnh nhạt theo thời gian",long:"Rút lui hoàn toàn có thể là cơ chế tự bảo vệ — nhưng thường kết thúc mối quan hệ trong im lặng."}}
+   ]},
+  {id:"s8",title:"Nghiện điện thoại",icon:"📱",
+   desc:"Hai người đi ăn cùng nhau nhưng người kia cứ cắm mặt vào điện thoại. Bạn ngồi đó, ăn một mình dù có người bên cạnh — cảm giác vô hình.",
+   choices:[
+    {id:"A",text:"Nói thẳng: bỏ điện thoại xuống đi",effect:{trust:-1,conflict:1,comm:0,emotion:-1},
+     next:{id:"A",desc:"Họ hơi khó chịu với yêu cầu",choices:[
+      {id:"A1",text:"Họ cãi lại, tranh luận về chuyện điện thoại",effect:{trust:-1,conflict:2,emotion:-1},result:{short:"Tranh cãi về triệu chứng, bỏ qua gốc rễ",long:"Điện thoại là biểu hiện — vấn đề thật có thể là cả hai đã hết chủ đề để nói chuyện với nhau."}},
+      {id:"A2",text:"Họ làm theo nhưng miễn cưỡng rõ ràng",effect:{trust:0,conflict:1},result:{short:"Buổi ăn trở nên gượng gạo, không thoải mái",long:"Ép buộc sự hiện diện không tạo ra kết nối thật sự — cần cả hai thực sự muốn ở bên nhau."}},
+      {id:"A3",text:"Họ cất điện thoại và hai người trò chuyện vui",effect:{trust:1,conflict:-1,comm:2},result:{short:"Kết nối được khôi phục ngay lập tức",long:"Đôi khi chỉ cần một lần nhắc nhở nhẹ nhàng đúng lúc là đủ để mọi thứ thay đổi tốt lên."}}
+     ]}},
+    {id:"B",text:"Góp ý nhẹ nhàng, chia sẻ cảm xúc thật",effect:{trust:1,conflict:-1,comm:2,emotion:1},result:{short:"Họ nhận ra và dần thay đổi tích cực",long:"Nói về cảm xúc ('muốn được trò chuyện') hiệu quả hơn nhiều so với phán xét ('cứ cắm điện thoại')."}},
+    {id:"C",text:"Không nói gì, tự ngồi buồn một mình",effect:{trust:-1,comm:-2,emotion:-2},result:{short:"Cảm thấy bị bỏ rơi, xa nhau dần",long:"Im lặng và chịu đựng là cách yêu bản thân ít nhất — bạn xứng đáng được hiện diện thật sự."}}
+   ]},
+  {id:"s9",title:"Cảm giác hết yêu",icon:"💔",
+   desc:"Bạn bắt đầu thấy tình cảm không còn như trước. Những cảm xúc quen thuộc dần phai nhạt — và bạn không còn chắc mình còn yêu nữa hay không.",
+   choices:[
+    {id:"A",text:"Chia tay luôn, không muốn kéo dài",effect:{trust:0,conflict:-1},
+     next:{id:"A",desc:"Quyết định rõ ràng đã được đưa ra",choices:[
+      {id:"A1",text:"Bạn cảm thấy nhẹ nhõm sau đó",effect:{trust:1,conflict:-2,emotion:2},result:{short:"Quyết định đúng đắn cho bản thân bạn",long:"Đôi khi dứt khoát là hành động tử tế nhất cho cả hai — sống thật với cảm xúc là điều dũng cảm."}},
+      {id:"A2",text:"Bạn bắt đầu hối hận và tiếc nuối",effect:{trust:-1,emotion:-2},result:{short:"Hối hận vì quyết định có thể quá vội vàng",long:"Cảm giác 'hết yêu' đôi khi chỉ là kiệt sức — không phải kết thúc. Đáng được suy nghĩ kỹ hơn."}},
+      {id:"A3",text:"Cả hai tổn thương nhưng hiểu nhau hơn",effect:{trust:1,conflict:-1,comm:2},result:{short:"Kết thúc trong tôn trọng và hiểu biết",long:"Chia tay trong hiểu biết là điều hiếm có — nó cho phép cả hai tiếp tục không mang theo vết thương."}}
+     ]}},
+    {id:"B",text:"Thử cứu vãn trước khi đưa ra quyết định",effect:{trust:1,comm:2,emotion:1},
+     next:{id:"B",desc:"Mối quan hệ có cơ hội được hồi sinh",choices:[
+      {id:"B1",text:"Tình cảm dần quay trở lại",effect:{trust:3,conflict:-2,comm:2,emotion:3},result:{short:"Mối quan hệ được hồi sinh mạnh mẽ",long:"Tình yêu có thể mờ dần rồi bùng lên lại — nếu cả hai cùng chọn nhau và nỗ lực cùng nhau."}},
+      {id:"B2",text:"Nhận ra hai người thật sự không hợp",effect:{trust:1,conflict:-1,comm:1},result:{short:"Chia tay trong hiểu biết sâu sắc hơn",long:"Cố gắng hết sức rồi quyết định — không phải thất bại, mà là sự trưởng thành đáng trân trọng."}},
+      {id:"B3",text:"Bạn trưởng thành hơn qua quá trình này",effect:{trust:1,comm:2,emotion:1},result:{short:"Bài học quý giá về bản thân và tình yêu",long:"Dù kết quả thế nào, việc cố gắng thật sự dạy bạn rất nhiều điều về chính mình."}}
+     ]}},
+    {id:"C",text:"Cứ để vậy, không muốn quyết định gì",effect:{trust:-1,comm:-1,emotion:-2},result:{short:"Mệt mỏi kéo dài, tổn thương âm ỉ",long:"Ở lại mà không có lý do để ở lại — là hình thức giam cầm cả hai trong sự trì trệ không lối thoát."}}
+   ]},
+  {id:"s10",title:"Bị gia đình thúc cưới",icon:"🧾",
+   desc:"Gia đình bắt đầu giục cưới liên tục, nhưng bạn chưa thấy bản thân sẵn sàng. Áp lực từ nhiều phía đang ngày càng tăng lên.",
+   choices:[
+    {id:"A",text:"Cưới luôn cho xong, chiều ý mọi người",effect:{trust:-1,comm:-2,emotion:-2},result:{short:"Nhanh nhưng rủi ro về lâu dài rất cao",long:"Hôn nhân vì áp lực không phải nền tảng hạnh phúc — mâu thuẫn sau đám cưới thường nặng hơn rất nhiều."}},
+    {id:"B",text:"Nói rõ ràng: mình cần thêm thời gian",effect:{trust:2,conflict:-1,comm:3,emotion:2},
+     next:{id:"B",desc:"Quyết định trưởng thành và dũng cảm",choices:[
+      {id:"B1",text:"Dành thời gian chuẩn bị kỹ càng hơn",effect:{trust:2,conflict:-1,comm:2},result:{short:"Vào hôn nhân với sự sẵn sàng thật sự",long:"Thời gian chuẩn bị không phải trì hoãn — mà là tôn trọng quyết định quan trọng nhất cuộc đời."}},
+      {id:"B2",text:"Hai người hiểu nhau sâu hơn trong giai đoạn đó",effect:{trust:3,conflict:-1,comm:3},result:{short:"Mối quan hệ vững chắc hơn trước ngày cưới",long:"Biết nhau thật sự trước khi kết hôn là món quà tốt nhất bạn có thể dành cho hôn nhân của mình."}},
+      {id:"B3",text:"Gia đình không đồng ý, tạo thêm áp lực",effect:{trust:1,conflict:1,comm:2},result:{short:"Giữ được giá trị bản thân dù rất khó",long:"Đứng vững trước áp lực gia đình cần hai người cùng đứng — đây là bài kiểm tra quan trọng nhất."}}
+     ]}},
+    {id:"C",text:"Từ chối thẳng, không muốn kết hôn lúc này",effect:{trust:0,conflict:1,comm:2},result:{short:"Rõ ràng và trung thực với chính mình",long:"Biết mình muốn gì và không muốn gì là sự trưởng thành — dù quyết định này dẫn đến thay đổi lớn."}}
+   ]}
+];
+
+function clamp(v,a,b){return Math.min(b,Math.max(a,v))}
+let state={phase:'start',si:0,node:null,scores:{trust:0,conflict:0,comm:0,emotion:0},bc:[]};
+function fx(e){if(!e)return;for(const k in e)state.scores[k]=clamp((state.scores[k]||0)+e[k],-10,10)}
+function pct(v){return Math.round((v+10)/20*100)}
+
+function persona(){
+  const {trust,conflict,comm,emotion}=state.scores;
+  if(comm>3&&conflict<0) return{icon:"🌸",name:"Người giao tiếp lành mạnh",color:"#10b981",light:"#d1fae5",border:"#6ee7b7",
+    desc:"Bạn có xu hướng xử lý xung đột bằng giao tiếp cởi mở và thẳng thắn. Đây là nền tảng vững chắc nhất cho bất kỳ mối quan hệ nào.",
+    traits:[{e:"💬",t:"Giao tiếp cởi mở"},{e:"🧘",t:"Kiểm soát cảm xúc tốt"},{e:"🤝",t:"Xây dựng niềm tin qua hành động"}]};
+  if(trust>3&&emotion>0) return{icon:"💙",name:"Người tin tưởng và cởi mở",color:"#3b82f6",light:"#dbeafe",border:"#93c5fd",
+    desc:"Bạn có khả năng trao niềm tin cho người khác một cách tự nhiên. Đây là điểm mạnh quý giá — nhưng cũng cần có ranh giới rõ ràng để bảo vệ bản thân.",
+    traits:[{e:"❤️",t:"Dễ kết nối cảm xúc"},{e:"🙏",t:"Sẵn lòng tha thứ"},{e:"🛡️",t:"Cần học cách bảo vệ mình"}]};
+  if(conflict>3&&emotion<-2) return{icon:"🔥",name:"Người cảm xúc mãnh liệt",color:"#ef4444",light:"#fee2e2",border:"#fca5a5",
+    desc:"Bạn phản ứng mạnh mẽ với cảm xúc và dễ bị cuốn vào xung đột. Sức mạnh cảm xúc là tài sản lớn — nếu được định hướng đúng cách.",
+    traits:[{e:"🌊",t:"Cảm xúc sâu sắc"},{e:"💝",t:"Yêu hết mình"},{e:"🎯",t:"Cần học điều tiết cảm xúc"}]};
+  if(comm<-2&&trust<-2) return{icon:"🌙",name:"Người né tránh xung đột",color:"#f59e0b",light:"#fef3c7",border:"#fcd34d",
+    desc:"Bạn có xu hướng im lặng để giữ hòa khí. Điều này bảo vệ bạn trong ngắn hạn — nhưng cảm xúc tích tụ sẽ tìm cách thoát ra về lâu dài.",
+    traits:[{e:"🕊️",t:"Tránh xung đột trực tiếp"},{e:"🌿",t:"Ưu tiên hòa khí"},{e:"🗣️",t:"Cần học nói ra cảm xúc"}]};
+  return{icon:"⭐",name:"Người đang học cân bằng",color:"#8b5cf6",light:"#ede9fe",border:"#c4b5fd",
+    desc:"Bạn đang trên hành trình học cách cân bằng giữa cảm xúc, giao tiếp và ranh giới cá nhân trong tình yêu. Đây là điều rất bình thường và đáng trân trọng.",
+    traits:[{e:"📈",t:"Đang phát triển"},{e:"🧠",t:"Tự nhận thức tốt"},{e:"🚀",t:"Tiềm năng rất lớn"}]};
+}
+
+function etags(e){
+  if(!e)return'';
+  return[
+    {k:'trust',l:'Niềm tin',c:'trust'},{k:'conflict',l:'Xung đột',c:'conflict'},
+    {k:'comm',l:'Giao tiếp',c:'comm'},{k:'emotion',l:'Cảm xúc',c:'emotion'}
+  ].filter(x=>e[x.k]).map(x=>`<span class="etag et-${x.c}">${x.l} ${e[x.k]>0?'+':''}${e[x.k]}</span>`).join('');
+}
+
+function render(){
+  const app=document.getElementById('app');
+  if(state.phase==='start')return void(app.innerHTML=startHTML());
+  if(state.phase==='result')return void(app.innerHTML=resultHTML());
+  app.innerHTML=playHTML();
+}
+
+function startHTML(){
+  return`<div class="hero fade-in">
+    <div class="hero-badge">✦ Game tâm lý tình yêu ✦</div>
+    <h1>Tình yêu,<br>Lựa chọn<br>& Hậu quả</h1>
+    <p>10 tình huống thực tế trong tình yêu.<br>Mỗi lựa chọn dẫn đến một chuỗi hậu quả riêng.</p>
+  </div>
+  <div class="start-card fade-in">
+    <div class="stats-row">
+      ${[{n:"10",l:"Tình huống"},{n:"4",l:"Chỉ số tâm lý"},{n:"4",l:"Tầng lựa chọn"},{n:"5",l:"Kết quả cuối"}].map(i=>`
+        <div class="stat-box"><div class="stat-n">${i.n}</div><div class="stat-l">${i.l}</div></div>`).join('')}
     </div>
-    <div class="scenario-card fade-in">
-      <div style="display:flex;gap:1rem;align-items:center;margin-bottom:1.2rem">
-        <div style="width:52px;height:52px;background:#fdf0e8;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.6rem">💑</div>
-        <div>
-          <div style="font-weight:500;font-size:1rem">Khám phá phong cách xử lý xung đột của bạn</div>
-          <div style="font-size:.85rem;color:var(--text2);margin-top:.2rem">Hệ thống điểm 4 chiều: Niềm tin · Xung đột · Giao tiếp · Cảm xúc</div>
-        </div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1.25rem">
-        ${[
-          { n: "10", l: "Tình huống" },
-          { n: "4", l: "Chỉ số tâm lý" },
-          { n: "3+", l: "Tầng lựa chọn" },
-          { n: "∞", l: "Kết quả khác nhau" },
-        ]
-          .map(
-            (i) => `
-          <div style="background:var(--surface2);border-radius:10px;padding:.8rem;text-align:center;border:1px solid var(--border)">
-            <div style="font-size:1.4rem;font-weight:600;color:var(--accent);font-family:'Playfair Display',serif">${i.n}</div>
-            <div style="font-size:.75rem;color:var(--text2)">${i.l}</div>
-          </div>`,
-          )
-          .join("")}
-      </div>
-      <button class="btn btn-primary" style="width:100%;padding:.85rem;font-size:.95rem" onclick="startGame()">Bắt đầu →</button>
-    </div>
-  `;
-      }
-
-      function renderPlaying(app) {
-        const s = SCENARIOS[state.scenarioIdx];
-        const prog = Math.round((state.scenarioIdx / SCENARIOS.length) * 100);
-        const node = state.currentNode || s;
-
-        let scoreHTML = `
-    <div class="scores-panel fade-in">
-      <div class="scores-title">Chỉ số tâm lý</div>
+    <div class="indicators">
       ${[
-        { k: "trust", l: "Niềm tin", cl: "trust" },
-        { k: "conflict", l: "Xung đột", cl: "conflict" },
-        { k: "comm", l: "Giao tiếp", cl: "comm" },
-        { k: "emotion", l: "Cảm xúc", cl: "emotion" },
-      ]
-        .map(
-          (sc) => `
-        <div class="score-row">
-          <div class="score-label">${sc.l}</div>
-          <div class="score-track"><div class="score-bar score-${sc.cl}" style="width:${getScorePct(state.scores[sc.k])}%"></div></div>
-          <div class="score-val ${sc.k}-val">${state.scores[sc.k] > 0 ? "+" : ""}${state.scores[sc.k]}</div>
-        </div>`,
-        )
-        .join("")}
+        {bg:"#d1fae5",bd:"#6ee7b7",c:"#065f46",e:"💚",l:"Niềm tin"},
+        {bg:"#fee2e2",bd:"#fca5a5",c:"#991b1b",e:"❤️",l:"Xung đột"},
+        {bg:"#cffafe",bd:"#67e8f9",c:"#164e63",e:"💙",l:"Giao tiếp"},
+        {bg:"#fef3c7",bd:"#fcd34d",c:"#92400e",e:"🧡",l:"Cảm xúc"}
+      ].map(i=>`
+        <div class="ind-chip" style="background:${i.bg};border-color:${i.bd};color:${i.c}">
+          <span>${i.e}</span><span>${i.l}</span>
+        </div>`).join('')}
+    </div>
+    <button class="btn-main" onclick="startGame()">Bắt đầu khám phá bản thân →</button>
+  </div>`;
+}
+
+function playHTML(){
+  const s=SCENARIOS[state.si];
+  const node=state.node||s;
+  const prog=Math.round(state.si/SCENARIOS.length*100);
+  const isLeaf=!!node.result;
+  const hasChoices=!!(node.choices&&node.choices.length);
+
+  const scoreBoxes=[
+    {k:'trust',l:'💚 Niềm tin',bar:'bar-trust',val:'val-trust',bg:'#d1fae5',bd:'#6ee7b7',tc:'#065f46'},
+    {k:'conflict',l:'❤️ Xung đột',bar:'bar-conflict',val:'val-conflict',bg:'#fee2e2',bd:'#fca5a5',tc:'#991b1b'},
+    {k:'comm',l:'💙 Giao tiếp',bar:'bar-comm',val:'val-comm',bg:'#cffafe',bd:'#67e8f9',tc:'#164e63'},
+    {k:'emotion',l:'🧡 Cảm xúc',bar:'bar-emotion',val:'val-emotion',bg:'#fef3c7',bd:'#fcd34d',tc:'#92400e'}
+  ];
+
+  const bc=state.bc.length?`<div class="breadcrumb">${state.bc.map((b,i)=>
+    `<span class="bc-item">${b}</span>${i<state.bc.length-1?'<span class="bc-sep">›</span>':''}`).join('')}</div>`:'';
+
+  let main='';
+  if(isLeaf){
+    main=`<div class="consequence fade-in">
+      <div class="cons-badge">✦ Hậu quả xảy ra</div>
+      <div class="cons-short">${node.result.short}</div>
+      <div class="cons-long">${node.result.long}</div>
+    </div>
+    <div class="nav-btns">
+      ${state.si<SCENARIOS.length-1
+        ?`<button class="btn-next" onclick="nextScene()">Tình huống tiếp theo →</button>`
+        :`<button class="btn-next" onclick="showResult()">Xem kết quả của bạn ✦</button>`}
+      <button class="btn-back" onclick="backScene()">↩ Thử lại</button>
     </div>`;
-
-        let bcHTML = "";
-        if (state.breadcrumb.length > 0) {
-          bcHTML = `<div class="breadcrumb">${state.breadcrumb.map((b, i) => `<span class="bc-item">${b}</span>${i < state.breadcrumb.length - 1 ? '<span class="bc-sep">›</span>' : ""}`).join("")}</div>`;
-        }
-
-        const isLeaf = node.result != null;
-        const hasChoices = node.choices && node.choices.length > 0;
-
-        let mainHTML = "";
-        if (isLeaf) {
-          mainHTML = `
-      <div class="result-card fade-in">
-        <div style="font-size:.75rem;font-weight:500;color:var(--accent);text-transform:uppercase;letter-spacing:1px;margin-bottom:.5rem">Hậu quả</div>
-        <div class="r-short">${node.result.short}</div>
-        <div class="r-long">${node.result.long}</div>
-      </div>
-      <div class="nav-btns">
-        ${state.scenarioIdx < SCENARIOS.length - 1 ? `<button class="btn btn-primary" onclick="nextScenario()">Tình huống tiếp theo →</button>` : `<button class="btn btn-primary" onclick="showResult()">Xem kết quả của bạn →</button>`}
-        <button class="btn btn-secondary" onclick="backToScenario()">Thử lại tình huống này</button>
-      </div>`;
-        } else if (hasChoices) {
-          mainHTML = `
-      <div class="depth-label">${state.breadcrumb.length === 0 ? "Bạn sẽ làm gì?" : node.desc || "Điều gì xảy ra tiếp theo?"}</div>
-      <div class="choices-list">
-        ${node.choices
-          .map(
-            (c) => `
-          <button class="choice-btn" onclick='chooseOption(${JSON.stringify(c)})'>
+  } else if(hasChoices){
+    main=`<div class="q-label">${state.bc.length===0?'Bạn sẽ làm gì?':(node.desc||'Điều gì xảy ra?')}</div>
+    <div class="choices-list">
+      ${node.choices.map(c=>`
+        <button class="choice-btn" onclick='pick(${JSON.stringify(c)})'>
+          <div class="choice-row">
             <div class="choice-id">${c.id}</div>
             <div class="choice-text">${c.text}</div>
-            ${
-              c.effect ?
-                `<div class="choice-effect">
-              ${c.effect.trust ? `<span class="effect-tag effect-trust">Niềm tin ${c.effect.trust > 0 ? "+" : ""}${c.effect.trust}</span>` : ""}
-              ${c.effect.conflict ? `<span class="effect-tag effect-conflict">Xung đột ${c.effect.conflict > 0 ? "+" : ""}${c.effect.conflict}</span>` : ""}
-              ${c.effect.comm ? `<span class="effect-tag effect-comm">Giao tiếp ${c.effect.comm > 0 ? "+" : ""}${c.effect.comm}</span>` : ""}
-              ${c.effect.emotion ? `<span class="effect-tag effect-emotion">Cảm xúc ${c.effect.emotion > 0 ? "+" : ""}${c.effect.emotion}</span>` : ""}
-            </div>`
-              : ""
-            }
-          </button>`,
-          )
-          .join("")}
-      </div>`;
-        }
+          </div>
+          ${c.effect?`<div class="etags">${etags(c.effect)}</div>`:''}</button>`).join('')}
+    </div>`;
+  }
 
-        app.innerHTML = `
-    <div class="progress-bar"><div class="progress-fill" style="width:${prog}%"></div></div>
-    ${scoreHTML}
-    <div class="scenario-card fade-in">
-      <div class="scenario-num">Tình huống ${state.scenarioIdx + 1} / ${SCENARIOS.length}</div>
-      <h2 class="scenario-title">${s.icon} ${s.title}</h2>
-      <div class="scenario-desc">${s.description}</div>
+  return`
+  <div class="progress-wrap fade-in">
+    <div class="progress-meta">
+      <span class="progress-label">TIẾN ĐỘ</span>
+      <span class="progress-frac">Tình huống ${state.si+1} / ${SCENARIOS.length}</span>
     </div>
-    ${bcHTML}
-    ${mainHTML}
-  `;
-      }
-
-      function renderResult(app) {
-        const r = getPersonalityResult();
-        const { trust, conflict, comm, emotion } = state.scores;
-        app.innerHTML = `
-    <div class="final-screen fade-in">
-      <div class="scenario-card">
-        <div style="font-size:.75rem;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:.5rem">Kết quả của bạn</div>
-        <h2>${r.type}</h2>
-        <div class="result-type" style="background:${r.color}22;color:${r.color}">Phong cách xử lý mối quan hệ</div>
-        <p class="result-desc">${r.desc}</p>
-        <div class="traits-grid">
-          ${r.traits.map((t) => `<div class="trait-item"><div class="trait-name">•</div><div class="trait-val">${t}</div></div>`).join("")}
-        </div>
-        <hr class="section-divider">
-        <div style="margin-bottom:1rem">
-          <div class="scores-title" style="margin-bottom:.9rem">Chỉ số tổng kết</div>
-          ${[
-            { k: "trust", v: trust, l: "Niềm tin", cl: "trust" },
-            {
-              k: "conflict",
-              v: conflict,
-              l: "Xu hướng xung đột",
-              cl: "conflict",
-            },
-            { k: "comm", v: comm, l: "Kỹ năng giao tiếp", cl: "comm" },
-            {
-              k: "emotion",
-              v: emotion,
-              l: "Trạng thái cảm xúc",
-              cl: "emotion",
-            },
-          ]
-            .map(
-              (sc) => `
-            <div class="score-row" style="margin-bottom:.7rem">
-              <div class="score-label">${sc.l}</div>
-              <div class="score-track"><div class="score-bar score-${sc.cl}" style="width:${getScorePct(sc.v)}%"></div></div>
-              <div class="score-val ${sc.k}-val">${sc.v > 0 ? "+" : ""}${sc.v}</div>
-            </div>`,
-            )
-            .join("")}
-        </div>
-        <button class="btn btn-primary" style="width:100%;padding:.85rem;font-size:.95rem;margin-top:.5rem" onclick="resetGame()">Chơi lại từ đầu</button>
+    <div class="progress-track"><div class="progress-fill" style="width:${prog}%"></div></div>
+  </div>
+  <div class="scores-panel fade-in">
+    <div class="scores-title">Chỉ số tâm lý của bạn</div>
+    <div class="score-grid">
+      ${scoreBoxes.map(sc=>`
+        <div class="score-box" style="background:${sc.bg};border-color:${sc.bd}">
+          <div class="score-head">
+            <span class="score-name" style="color:${sc.tc}">${sc.l}</span>
+            <span class="score-num" style="color:${sc.tc}">${state.scores[sc.k]>0?'+':''}${state.scores[sc.k]}</span>
+          </div>
+          <div class="score-bar-wrap">
+            <div class="score-bar-inner ${sc.bar}" style="width:${pct(state.scores[sc.k])}%"></div>
+          </div>
+        </div>`).join('')}
+    </div>
+  </div>
+  <div class="scene-card fade-in">
+    <div class="scene-top">
+      <div class="scene-emoji">${s.icon}</div>
+      <div>
+        <div class="scene-num">Tình huống ${state.si+1}</div>
+        <div class="scene-title">${s.title}</div>
       </div>
     </div>
-  `;
-      }
+    <div class="scene-body">
+      <div class="scene-desc">${s.desc}</div>
+    </div>
+  </div>
+  ${bc}${main}`;
+}
 
-      function startGame() {
-        state = {
-          phase: "playing",
-          scenarioIdx: 0,
-          currentNode: null,
-          scores: { trust: 0, conflict: 0, comm: 0, emotion: 0 },
-          history: [],
-          breadcrumb: [],
-        };
-        render();
-      }
+function resultHTML(){
+  const r=persona();
+  const {trust,conflict,comm,emotion}=state.scores;
+  const rows=[
+    {l:'💚 Niềm tin',v:trust,bar:'bar-trust',tc:'#065f46'},
+    {l:'❤️ Xung đột',v:conflict,bar:'bar-conflict',tc:'#991b1b'},
+    {l:'💙 Giao tiếp',v:comm,bar:'bar-comm',tc:'#164e63'},
+    {l:'🧡 Cảm xúc',v:emotion,bar:'bar-emotion',tc:'#92400e'}
+  ];
+  return`<div class="result-card fade-in">
+    <div class="result-header">
+      <div class="result-icon">${r.icon}</div>
+      <div class="result-type" style="background:${r.light};color:${r.color};border-color:${r.border}">Phong cách tình yêu của bạn</div>
+      <div class="result-name">${r.name}</div>
+    </div>
+    <div class="result-desc">${r.desc}</div>
+    <div class="traits-row">
+      ${r.traits.map(t=>`<div class="trait-box"><div class="trait-emoji">${t.e}</div><div class="trait-text">${t.t}</div></div>`).join('')}
+    </div>
+    <div class="divider"></div>
+    <div class="final-scores-title">Chỉ số tổng kết</div>
+    ${rows.map(r=>`
+      <div class="final-score-row">
+        <span class="fsr-label">${r.l}</span>
+        <div class="fsr-track"><div class="fsr-bar ${r.bar}" style="width:${pct(r.v)}%"></div></div>
+        <span class="fsr-val" style="color:${r.tc}">${r.v>0?'+':''}${r.v}</span>
+      </div>`).join('')}
+    <div style="margin-top:1.5rem">
+      <button class="btn-main" onclick="reset()">↩ Chơi lại từ đầu</button>
+    </div>
+  </div>`;
+}
 
-      function chooseOption(choice) {
-        applyEffect(choice.effect);
-        state.breadcrumb.push(choice.id);
-        state.history.push({ path: choice.id, text: choice.text });
-        if (choice.result) {
-          state.currentNode = { result: choice.result };
-        } else if (choice.next) {
-          state.currentNode = choice.next;
-        }
-        render();
-      }
-
-      function nextScenario() {
-        state.scenarioIdx++;
-        state.currentNode = null;
-        state.breadcrumb = [];
-        render();
-      }
-
-      function backToScenario() {
-        state.currentNode = null;
-        state.breadcrumb = [];
-        render();
-      }
-
-      function showResult() {
-        state.phase = "result";
-        render();
-      }
-
-      function resetGame() {
-        state = {
-          phase: "start",
-          scenarioIdx: 0,
-          currentNode: null,
-          scores: { trust: 0, conflict: 0, comm: 0, emotion: 0 },
-          history: [],
-          breadcrumb: [],
-        };
-        render();
-      }
-
-      render();
-    </script>
-  </body>
+function startGame(){state={phase:'playing',si:0,node:null,scores:{trust:0,conflict:0,comm:0,emotion:0},bc:[]};render()}
+function pick(c){fx(c.effect);state.bc.push(c.id);state.node=c.result?{result:c.result}:(c.next||null);render()}
+function nextScene(){state.si++;state.node=null;state.bc=[];render()}
+function backScene(){state.node=null;state.bc=[];render()}
+function showResult(){state.phase='result';render()}
+function reset(){state={phase:'start',si:0,node:null,scores:{trust:0,conflict:0,comm:0,emotion:0},bc:[]};render()}
+render();
+</script>
+</body>
 </html>
