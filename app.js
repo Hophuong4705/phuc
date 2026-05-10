@@ -10,7 +10,8 @@ let state = {
     si: 0, 
     node: null, 
     
-    currentScoreObj: { trust: 0, conflict: 0, comm: 0, emotion: 0 },
+    // 6 Chỉ số mới
+    currentScoreObj: { reason: 0, empathy: 0, control: 0, comm: 0, finance: 0, bond: 0 },
     tempResult: null,
     tempTimeStart: 0
 };
@@ -19,23 +20,20 @@ let radarChartObj = null;
 let pieChartObj = null;
 
 const $ = id => document.getElementById(id);
-
 function showToast(msg) {
-    const t = $('toast'); 
-    if(!t) return;
-    t.textContent = msg; 
-    t.classList.add('show');
+    const t = $('toast'); if(!t) return;
+    t.textContent = msg; t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 2500);
 }
-
-function clamp(v, min, max) { 
-    return Math.min(max, Math.max(min, v)); 
-}
-
+function clamp(v, min, max) { return Math.min(max, Math.max(min, v)); }
 function formatDate(iso) {
     const d = new Date(iso);
     return `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getFullYear()}`;
 }
+const formatVND = val => new Intl.NumberFormat('vi-VN').format(val) + " VNĐ";
+
+// Đăng ký Plugin ChartDataLabels
+Chart.register(ChartDataLabels);
 
 // ── ROUTER MANAGER ──
 function renderApp() {
@@ -79,10 +77,7 @@ function renderMainContent() {
     return '';
 }
 
-function changeView(v) { 
-    state.view = v; 
-    renderApp(); 
-}
+function changeView(v) { state.view = v; renderApp(); }
 
 // ── 1. AUTH VIEWS ──
 function renderLogin() {
@@ -124,7 +119,8 @@ function renderDashboard() {
                     <div class="welcome-avatar">👋</div>
                     <div>
                         <h1 style="font-size:1.6rem; margin-bottom:8px">Xin chào, ${u.name}!</h1>
-                        <p style="color:var(--text-muted)">Năng lực Tâm lý Tổng thể của bạn đang phát triển rất tốt.</p>
+                        <p style="color:var(--text-muted); margin-bottom:15px">Bạn đã sẵn sàng cho bài tập hôm nay?</p>
+                        <button class="btn btn-primary" onclick="startModule('emotion')">BẮT ĐẦU BÀI TẬP ➔</button>
                     </div>
                 </div>
                 <div class="radar-container"><canvas id="dashRadar"></canvas></div>
@@ -166,31 +162,38 @@ function renderDashboard() {
 }
 
 function drawDashboardRadar() {
-    const ctx = $('dashRadar'); 
-    if(!ctx) return;
+    const ctx = $('dashRadar'); if(!ctx) return;
     if(radarChartObj) radarChartObj.destroy();
     
     const st = state.currentUser.stats;
     const hasPlayed = state.currentUser.history && state.currentUser.history.length > 0;
     
     const dataVals = hasPlayed 
-        ? [st.trust, 100 - st.conflict, st.comm, st.emotion] 
-        : [0, 0, 0, 0];
+        ? [st.reason, st.empathy, st.control, st.comm, st.finance, st.bond] 
+        : [0, 0, 0, 0, 0, 0];
 
     radarChartObj = new Chart(ctx, {
         type: 'radar',
         data: {
-            labels: ['Lý trí', 'Kiểm soát', 'Giao tiếp', 'Cảm xúc'],
+            labels: ['Lý trí', 'Thấu cảm', 'Kiềm chế', 'Giao tiếp', 'Tài chính', 'Gắn kết'],
             datasets: [{
                 data: dataVals,
                 backgroundColor: 'rgba(6, 182, 212, 0.2)', borderColor: 'rgba(6, 182, 212, 1)',
-                borderWidth: 2, pointBackgroundColor: 'rgba(236, 72, 153, 1)', pointRadius: 3
+                borderWidth: 2, pointBackgroundColor: 'rgba(236, 72, 153, 1)', pointRadius: 4
             }]
         },
         options: {
-            layout: { padding: 15 },
-            scales: { r: { angleLines: {color: 'rgba(255,255,255,0.1)'}, grid: {color: 'rgba(255,255,255,0.1)'}, ticks: {display: false, max: 100, min: 0}, pointLabels: {color: '#94A3B8', font: {size: 11, family: 'Nunito', weight: '700'}} } },
-            plugins: { legend: {display: false} }, maintainAspectRatio: false
+            layout: { padding: 25 },
+            scales: { r: { angleLines: {color: 'rgba(255,255,255,0.15)'}, grid: {color: 'rgba(255,255,255,0.15)'}, ticks: {display: false, max: 100, min: 0}, pointLabels: {color: '#94A3B8', font: {size: 11, family: 'Nunito', weight: '700'}} } },
+            plugins: { 
+                legend: {display: false},
+                datalabels: { 
+                    color: '#fff', 
+                    font: {size: 10, weight: 'bold'},
+                    formatter: function(value) { return value > 0 ? value + '%' : ''; }
+                }
+            }, 
+            maintainAspectRatio: false
         }
     });
 }
@@ -202,7 +205,7 @@ function startModule(moduleId) {
     
     state.si = 0; 
     state.node = null;
-    state.currentScoreObj = { trust: 0, conflict: 0, comm: 0, emotion: 0 };
+    state.currentScoreObj = { reason: 0, empathy: 0, control: 0, comm: 0, finance: 0, bond: 0 };
     state.tempTimeStart = Date.now();
     changeView('scenario');
 }
@@ -210,7 +213,7 @@ function startModule(moduleId) {
 function nextScenarioInModule() {
     state.si++; 
     state.node = null;
-    state.currentScoreObj = { trust: 0, conflict: 0, comm: 0, emotion: 0 };
+    state.currentScoreObj = { reason: 0, empathy: 0, control: 0, comm: 0, finance: 0, bond: 0 };
     state.tempTimeStart = Date.now();
     changeView('scenario');
 }
@@ -225,8 +228,6 @@ function renderScenario() {
         let bonus = 10;
         if (state.node.scoreBonus !== undefined) bonus = state.node.scoreBonus;
         else if (node.result.scoreBonus !== undefined) bonus = node.result.scoreBonus;
-        else if (state.currentScoreObj.comm > 0 || state.currentScoreObj.trust > 0) bonus = 15;
-        else bonus = -10;
         
         state.tempResult.bonus = bonus;
         state.tempResult.timeTaken = Math.round((Date.now() - state.tempTimeStart) / 1000); 
@@ -266,10 +267,13 @@ function renderScenario() {
 
 function pickChoice(c) {
     if(c.effect) {
-        if(c.effect.trust) state.currentScoreObj.trust += c.effect.trust;
-        if(c.effect.conflict) state.currentScoreObj.conflict += c.effect.conflict;
+        // Ánh xạ logic 6 chỉ số mới
+        if(c.effect.reason) state.currentScoreObj.reason += c.effect.reason;
+        if(c.effect.empathy) state.currentScoreObj.empathy += c.effect.empathy;
+        if(c.effect.control) state.currentScoreObj.control += c.effect.control;
         if(c.effect.comm) state.currentScoreObj.comm += c.effect.comm;
-        if(c.effect.emotion) state.currentScoreObj.emotion += c.effect.emotion;
+        if(c.effect.finance) state.currentScoreObj.finance += c.effect.finance;
+        if(c.effect.bond) state.currentScoreObj.bond += c.effect.bond;
     }
     
     let bonus = 10;
@@ -289,10 +293,13 @@ function renderResult() {
         let u = state.currentUser;
         u.score += Math.max(0, bonus); 
         
-        u.stats.trust = clamp(u.stats.trust + state.currentScoreObj.trust, 0, 100);
-        u.stats.conflict = clamp(u.stats.conflict + state.currentScoreObj.conflict, 0, 100);
+        // Cập nhật 6 chỉ số
+        u.stats.reason = clamp(u.stats.reason + state.currentScoreObj.reason, 0, 100);
+        u.stats.empathy = clamp(u.stats.empathy + state.currentScoreObj.empathy, 0, 100);
+        u.stats.control = clamp(u.stats.control + state.currentScoreObj.control, 0, 100);
         u.stats.comm = clamp(u.stats.comm + state.currentScoreObj.comm, 0, 100);
-        u.stats.emotion = clamp(u.stats.emotion + state.currentScoreObj.emotion, 0, 100);
+        u.stats.finance = clamp(u.stats.finance + state.currentScoreObj.finance, 0, 100);
+        u.stats.bond = clamp(u.stats.bond + state.currentScoreObj.bond, 0, 100);
         
         if (!u.history) u.history = [];
         u.history.unshift({
@@ -362,29 +369,39 @@ function renderResult() {
 }
 
 function drawResultRadar() {
-    const ctx = $('resRadar'); 
-    if(!ctx) return;
+    const ctx = $('resRadar'); if(!ctx) return;
     if(radarChartObj) radarChartObj.destroy();
     
-    const t = clamp(50 + state.currentScoreObj.trust, 0, 100);
-    const cf = clamp(50 + state.currentScoreObj.conflict, 0, 100);
+    // Base 50 + Tác động để thấy rõ sự thay đổi trong Tình huống
+    const r = clamp(50 + state.currentScoreObj.reason, 0, 100);
+    const e = clamp(50 + state.currentScoreObj.empathy, 0, 100);
+    const ct = clamp(50 + state.currentScoreObj.control, 0, 100);
     const cm = clamp(50 + state.currentScoreObj.comm, 0, 100);
-    const e = clamp(50 + state.currentScoreObj.emotion, 0, 100);
+    const f = clamp(50 + state.currentScoreObj.finance, 0, 100);
+    const b = clamp(50 + state.currentScoreObj.bond, 0, 100);
     
     radarChartObj = new Chart(ctx, {
         type: 'radar',
         data: {
-            labels: ['Lý trí / Niềm tin', 'Kiểm soát Bốc đồng', 'Giao tiếp Thấu cảm', 'Trí tuệ Cảm xúc'],
+            labels: ['Lý trí', 'Thấu cảm', 'Kiềm chế', 'Giao tiếp', 'Tài chính', 'Gắn kết'],
             datasets: [{
-                data: [t, 100 - cf, cm, e],
+                data: [r, e, ct, cm, f, b],
                 backgroundColor: 'rgba(139, 92, 246, 0.3)', borderColor: 'rgba(139, 92, 246, 1)',
                 borderWidth: 2, pointBackgroundColor: 'rgba(236, 72, 153, 1)', pointRadius: 4
             }]
         },
         options: {
-            layout: { padding: 15 },
+            layout: { padding: 25 },
             scales: { r: { angleLines: {color: 'rgba(255,255,255,0.1)'}, grid: {color: 'rgba(255,255,255,0.1)'}, ticks: {display: false, max: 100, min: 0}, pointLabels: {color: '#94A3B8', font: {size: 12, family: 'Nunito', weight: '700'}} } },
-            plugins: { legend: {display: false} }, maintainAspectRatio: false
+            plugins: { 
+                legend: {display: false},
+                datalabels: { 
+                    color: '#fff', 
+                    font: {size: 10, weight: 'bold'},
+                    formatter: function(value) { return value > 0 ? value + '%' : ''; }
+                }
+            }, 
+            maintainAspectRatio: false
         }
     });
 }
@@ -457,7 +474,6 @@ function calcFinance() {
 
     const alertBox = $('fAlertBox'); 
     const comment = $('fComment');
-    
     if(!alertBox || !comment) return;
 
     if(totalExp > totalInc) {
@@ -480,8 +496,7 @@ function calcFinance() {
 }
 
 function initPieChart() {
-    const ctx = $('pieChart'); 
-    if (!ctx) return;
+    const ctx = $('pieChart'); if (!ctx) return;
     if (pieChartObj) pieChartObj.destroy();
     
     const essentials = (Number($('fExpR')?.value) || 0) + (Number($('fExpL')?.value) || 0);
@@ -499,7 +514,21 @@ function initPieChart() {
             }] 
         },
         options: { 
-            plugins: { legend: { position: 'bottom', labels: { color: '#94A3B8', font: { family: 'Nunito', size: 11 } } } }, 
+            plugins: { 
+                legend: { position: 'bottom', labels: { color: '#94A3B8', font: { family: 'Nunito', size: 11 } } },
+                datalabels: {
+                    color: '#fff',
+                    font: { weight: 'bold', size: 14 },
+                    formatter: (value, ctx) => {
+                        let sum = 0;
+                        let dataArr = ctx.chart.data.datasets[0].data;
+                        dataArr.map(data => { sum += data; });
+                        if(sum === 0) return "0%";
+                        let percentage = Math.round((value * 100 / sum)) + "%";
+                        return percentage;
+                    }
+                }
+            }, 
             maintainAspectRatio: false, 
             cutout: '60%', 
             layout: { padding: 10 } 
@@ -573,7 +602,7 @@ function doRegister() {
         contact, 
         password: pass,
         score: 0, 
-        stats: { trust: 0, conflict: 100, comm: 0, emotion: 0 }, 
+        stats: { reason: 50, empathy: 50, control: 50, comm: 50, finance: 50, bond: 50 }, 
         history: [],
         createdAt: new Date().toISOString()
     };
@@ -594,7 +623,10 @@ function doLogin() {
     const user = getDB().find(u => u.contact === contact && u.password === pass);
     if(!user) return showToast('Sai thông tin đăng nhập!');
     
-    if(!user.stats) user.stats = { trust: 0, conflict: 100, comm: 0, emotion: 0 };
+    // Convert old DB users to new 6 stats schema
+    if(!user.stats || user.stats.reason === undefined) {
+        user.stats = { reason: 50, empathy: 50, control: 50, comm: 50, finance: 50, bond: 50 };
+    }
     if(!user.history) user.history = [];
 
     state.currentUser = user; 
